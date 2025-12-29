@@ -64,6 +64,23 @@
             gap: 1rem;
         }
 
+        .back-to-home {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .back-to-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
         .logo {
             display: flex;
             align-items: center;
@@ -696,6 +713,11 @@
                 padding: 0 1rem;
             }
 
+            .back-to-home {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
             .toggle-container {
                 padding: 0.5rem 0.75rem;
             }
@@ -946,6 +968,7 @@
             return (
                 <header className="header">
                     <div className="header-content">
+                        <a href="index.html" className="back-to-home">← Ana Sayfa</a>
                         <div className="logo">
                             <span className="logo-icon">🕌</span>
                             <div className="logo-text">
