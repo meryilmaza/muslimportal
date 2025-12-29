@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Videoları - İslami İçerik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .categories { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center; }
+        .cat-btn { padding: 0.75rem 1.5rem; border: 2px solid white; border-radius: 10px; background: rgba(255, 255, 255, 0.2); color: white; font-weight: 600; cursor: pointer; }
+        .cat-btn.active { background: white; color: var(--primary); }
+        .videos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        .video-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s; cursor: pointer; }
+        .video-card:hover { transform: translateY(-5px); }
+        .video-thumb { width: 100%; height: 180px; background: linear-gradient(135deg, var(--primary) 0%, #059669 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; }
+        .play-icon { position: absolute; font-size: 3rem; }
+        .video-info { padding: 1.5rem; }
+        .video-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .video-desc { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6; }
+        .video-meta { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🎓 Eğitim Videoları</h1>
+        <div style="width: 120px;"></div>
+    </div>
+    <div class="container">
+        <div class="categories">
+            <button class="cat-btn active" onclick="filterVideos('all')">Tümü</button>
+            <button class="cat-btn" onclick="filterVideos('namaz')">🕌 Namaz</button>
+            <button class="cat-btn" onclick="filterVideos('kuran')">📖 Kuran</button>
+            <button class="cat-btn" onclick="filterVideos('arapca')">🗣️ Arapça</button>
+            <button class="cat-btn" onclick="filterVideos('ilmihal')">📚 İlmihal</button>
+        </div>
+        <div class="videos-grid" id="videosContainer"></div>
+    </div>
+    <script>
+        const VIDEOS = [
+            { id: 1, category: 'namaz', icon: '🕌', title: 'Namaz Nasıl Kılınır?', desc: 'Adım adım namaz öğrenimi', duration: '15:30', views: '125K' },
+            { id: 2, category: 'kuran', icon: '📖', title: 'Kuran Okumayı Öğrenmek', desc: 'Elif-Ba dersleri', duration: '25:45', views: '89K' },
+            { id: 3, category: 'arapca', icon: '🗣️', title: 'Arapça Alfabe', desc: 'Harfleri tanıyalım', duration: '18:20', views: '67K' },
+            { id: 4, category: 'ilmihal', icon: '📚', title: 'Abdest Nasıl Alınır?', desc: 'Abdest farzları ve sünnetleri', duration: '12:15', views: '156K' },
+            { id: 5, category: 'namaz', icon: '🕌', title: 'Cuma Namazı', desc: 'Cuma namazının önemi ve kılınışı', duration: '20:00', views: '98K' },
+            { id: 6, category: 'kuran', icon: '📖', title: 'Tecvid Dersleri', desc: 'Kuran okuma kuralları', duration: '30:10', views: '72K' },
+            { id: 7, category: 'ilmihal', icon: '📚', title: 'Oruç İbadeti', desc: 'Orucun hükümleri', duration: '22:30', views: '84K' },
+            { id: 8, category: 'arapca', icon: '🗣️', title: 'Günlük Arapça Kelimeler', desc: 'Temel kelime hazinesi', duration: '16:45', views: '53K' }
+        ];
+
+        let currentCategory = 'all';
+
+        function displayVideos() {
+            const filtered = currentCategory === 'all' ? VIDEOS : VIDEOS.filter(v => v.category === currentCategory);
+            document.getElementById('videosContainer').innerHTML = filtered.map(video => `
+                <div class="video-card" onclick="playVideo(${video.id})">
+                    <div class="video-thumb">
+                        ${video.icon}
+                        <div class="play-icon">▶️</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-desc">${video.desc}</div>
+                        <div class="video-meta">
+                            <span>⏱️ ${video.duration}</span>
+                            <span>👁️ ${video.views}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterVideos(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayVideos();
+        }
+
+        function playVideo(id) {
+            alert('Video oynatıcı açılacak. YouTube veya başka video platformu entegre edilebilir.');
+        }
+
+        displayVideos();
+    </script>
+</body>
+</html>

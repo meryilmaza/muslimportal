@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadis Günlüğü - Her Gün Bir Hadis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --accent: #8b5cf6;
+            --gold: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .daily-hadith {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .date-badge {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .hadith-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hadith-arabic {
+            font-family: 'Scheherazade New', serif;
+            font-size: 2rem;
+            line-height: 2.5;
+            color: var(--text-primary);
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 16px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .hadith-translation {
+            font-size: 1.25rem;
+            line-height: 2;
+            color: var(--text-primary);
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--background);
+            border-radius: 16px;
+        }
+
+        .hadith-reference {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 1rem 2rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .hadith-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-favorite {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-favorite.active {
+            background: var(--gold);
+            color: white;
+        }
+
+        .btn-share {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-share:hover, .btn-favorite:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navigation {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .categories {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid white;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .category-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .daily-hadith {
+                padding: 2rem 1.5rem;
+            }
+
+            .hadith-arabic {
+                font-size: 1.5rem;
+            }
+
+            .hadith-translation {
+                font-size: 1rem;
+            }
+
+            .hadith-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            ← Ana Sayfa
+        </a>
+        <h1>📜 Hadis Günlüğü</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCategory('all')">Tümü</button>
+            <button class="category-btn" onclick="filterCategory('ibadet')">🕌 İbadet</button>
+            <button class="category-btn" onclick="filterCategory('ahlak')">💫 Ahlak</button>
+            <button class="category-btn" onclick="filterCategory('ilim')">📚 İlim</button>
+            <button class="category-btn" onclick="filterCategory('hayat')">🌟 Hayat</button>
+        </div>
+
+        <div class="daily-hadith">
+            <div class="date-badge" id="dateDisplay"></div>
+            <div class="hadith-icon">📜</div>
+            
+            <div id="hadithContent">
+                <!-- JavaScript ile doldurulacak -->
+            </div>
+
+            <div class="hadith-actions">
+                <button class="action-btn btn-favorite" onclick="toggleFavorite()" id="favoriteBtn">
+                    ⭐ Favorilere Ekle
+                </button>
+                <button class="action-btn btn-share" onclick="shareHadith()">
+                    🔗 Paylaş
+                </button>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousHadith()" id="prevBtn">
+                ← Önceki Hadis
+            </button>
+            <button class="nav-btn" onclick="nextHadith()" id="nextBtn">
+                Sonraki Hadis →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const HADITHS = [
+            {
+                id: 1,
+                category: 'ahlak',
+                arabic: 'إِنَّمَا بُعِثْتُ لِأُتَمِّمَ مَكَارِمَ الْأَخْلَاقِ',
+                translation: 'Ben ancak güzel ahlakı tamamlamak için gönderildim.',
+                reference: 'Muvatta, Hüsnü\'l-Hulk 8'
+            },
+            {
+                id: 2,
+                category: 'ibadet',
+                arabic: 'الصَّلَاةُ عِمَادُ الدِّينِ',
+                translation: 'Namaz dinin direğidir.',
+                reference: 'Beyhaki, Şuabü\'l-İman 2/345'
+            },
+            {
+                id: 3,
+                category: 'ilim',
+                arabic: 'طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ',
+                translation: 'İlim öğrenmek her Müslümana farzdır.',
+                reference: 'İbn Mace, Mukaddime 17'
+            },
+            {
+                id: 4,
+                category: 'hayat',
+                arabic: 'الْمُؤْمِنُ الْقَوِيُّ خَيْرٌ وَأَحَبُّ إِلَى اللَّهِ مِنَ الْمُؤْمِنِ الضَّعِيفِ',
+                translation: 'Güçlü mümin, zayıf müminden daha hayırlı ve Allah katında daha sevimlidir.',
+                reference: 'Müslim, Kader 34'
+            },
+            {
+                id: 5,
+                category: 'ahlak',
+                arabic: 'لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ',
+                translation: 'Sizden biri, kendisi için istediğini kardeşi için de istemedikçe iman etmiş olmaz.',
+                reference: 'Buhari, İman 7'
+            },
+            {
+                id: 6,
+                category: 'ibadet',
+                arabic: 'مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ',
+                translation: 'Kim Ramazan ayını imanla ve sevap umarak oruç tutarsa, geçmiş günahları bağışlanır.',
+                reference: 'Buhari, Savm 6'
+            },
+            {
+                id: 7,
+                category: 'hayat',
+                arabic: 'الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ',
+                translation: 'Dünya müminin zindanı, kâfirin cennetidir.',
+                reference: 'Müslim, Zühd 1'
+            },
+            {
+                id: 8,
+                category: 'ahlak',
+                arabic: 'الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ',
+                translation: 'Müslüman, Müslümanların dilinden ve elinden emin oldukları kimsedir.',
+                reference: 'Buhari, İman 4'
+            },
+            {
+                id: 9,
+                category: 'ilim',
+                arabic: 'مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ',
+                translation: 'Kim ilim öğrenmek için bir yola girerse, Allah ona cennet yolunu kolaylaştırır.',
+                reference: 'Müslim, Zikir 39'
+            },
+            {
+                id: 10,
+                category: 'ibadet',
+                arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ',
+                translation: 'Allah\'a en sevimli amel, az da olsa devamlı olanıdır.',
+                reference: 'Buhari, Rikak 18'
+            }
+        ];
+
+        let currentIndex = 0;
+        let currentCategory = 'all';
+        let favorites = JSON.parse(localStorage.getItem('favoriteHadiths') || '[]');
+
+        window.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            displayHadith();
+        });
+
+        function updateDate() {
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateDisplay').textContent = 
+                today.toLocaleDateString('tr-TR', options);
+        }
+
+        function displayHadith() {
+            const filteredHadiths = currentCategory === 'all' 
+                ? HADITHS 
+                : HADITHS.filter(h => h.category === currentCategory);
+
+            if (filteredHadiths.length === 0) return;
+
+            const hadith = filteredHadiths[currentIndex];
+            const isFavorite = favorites.includes(hadith.id);
+
+            document.getElementById('hadithContent').innerHTML = `
+                <div class="hadith-arabic">${hadith.arabic}</div>
+                <div class="hadith-translation">${hadith.translation}</div>
+                <div class="hadith-reference">📖 ${hadith.reference}</div>
+            `;
+
+            // Update favorite button
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            if (isFavorite) {
+                favoriteBtn.classList.add('active');
+                favoriteBtn.innerHTML = '⭐ Favorilerde';
+            } else {
+                favoriteBtn.classList.remove('active');
+                favoriteBtn.innerHTML = '☆ Favorilere Ekle';
+            }
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === filteredHadiths.length - 1;
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            currentIndex = 0;
+
+            // Update buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            displayHadith();
+        }
+
+        function previousHadith() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayHadith();
+            }
+        }
+
+        function nextHadith() {
+            const filteredHadiths = currentCategory === 'all' 
+                ? HADITHS 
+                : HADITHS.filter(h => h.category === currentCategory);
+
+            if (currentIndex < filteredHadiths.length - 1) {
+                currentIndex++;
+                displayHadith();
+            }
+        }
+
+        function toggleFavorite() {
+            const filteredHadiths = currentCategory === 'all' 
+                ? HADITHS 
+                : HADITHS.filter(h => h.category === currentCategory);
+
+            const hadith = filteredHadiths[currentIndex];
+            const index = favorites.indexOf(hadith.id);
+
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(hadith.id);
+            }
+
+            localStorage.setItem('favoriteHadiths', JSON.stringify(favorites));
+            displayHadith();
+        }
+
+        function shareHadith() {
+            const filteredHadiths = currentCategory === 'all' 
+                ? HADITHS 
+                : HADITHS.filter(h => h.category === currentCategory);
+
+            const hadith = filteredHadiths[currentIndex];
+            const text = `${hadith.arabic}\n\n${hadith.translation}\n\n📖 ${hadith.reference}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Hadis-i Şerif',
+                    text: text
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('✅ Hadis kopyalandı!');
+                });
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') previousHadith();
+            if (e.key === 'ArrowRight') nextHadith();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rozetler & Başarılar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --gold: #f59e0b; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .level-card { background: white; border-radius: 20px; padding: 3rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); text-align: center; }
+        .level-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .level-number { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .level-label { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .xp-bar { width: 100%; height: 20px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-bottom: 0.5rem; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%); transition: width 0.3s; }
+        .xp-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.5rem; }
+        .badge-card { background: white; border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s; }
+        .badge-card:hover { transform: translateY(-5px); }
+        .badge-card.locked { opacity: 0.5; }
+        .badge-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+        .badge-name { font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .badge-desc { font-size: 0.75rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🏆 Rozetler & Seviye</h1>
+        <div style="width: 120px;"></div>
+    </div>
+    <div class="container">
+        <div class="level-card">
+            <div class="level-icon">⭐</div>
+            <div class="level-number">Level 7</div>
+            <div class="level-label">Gayretli Mümin</div>
+            <div class="xp-bar">
+                <div class="xp-fill" style="width: 65%"></div>
+            </div>
+            <div class="xp-text">1,850 / 3,000 XP</div>
+        </div>
+
+        <h2 style="color: white; text-align: center; margin-bottom: 2rem; font-size: 2rem;">
+            🎖️ Kazanılan Rozetler
+        </h2>
+        <div class="badges-grid">
+            <div class="badge-card">
+                <div class="badge-icon">🌟</div>
+                <div class="badge-name">İlk Adım</div>
+                <div class="badge-desc">İlk namazını kaydet</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">🔥</div>
+                <div class="badge-name">7 Gün</div>
+                <div class="badge-desc">7 gün art arda namaz</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">📖</div>
+                <div class="badge-name">Kuran Aşığı</div>
+                <div class="badge-desc">50 sayfa oku</div>
+            </div>
+            <div class="badge-card">
+                <div class="badge-icon">🌙</div>
+                <div class="badge-name">Ramazan</div>
+                <div class="badge-desc">Ramazan'da 15 gün oruç</div>
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-icon">💎</div>
+                <div class="badge-name">Hatim</div>
+                <div class="badge-desc">Bir hatim tamamla</div>
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-icon">🏅</div>
+                <div class="badge-name">30 Gün</div>
+                <div class="badge-desc">30 gün art arda</div>
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-icon">👑</div>
+                <div class="badge-name">Seviye 10</div>
+                <div class="badge-desc">Level 10'a ulaş</div>
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-icon">⭐</div>
+                <div class="badge-name">Tesbih Ustası</div>
+                <div class="badge-desc">10,000 tesbih çek</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

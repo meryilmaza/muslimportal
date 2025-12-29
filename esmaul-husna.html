@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esma-ül Hüsna - Allah'ın 99 İsmi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --accent: #8b5cf6;
+            --gold: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .intro-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .intro-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .intro-card h2 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .intro-card p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .name-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .name-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .name-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .name-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.875rem;
+        }
+
+        .name-arabic {
+            font-family: 'Scheherazade New', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .name-transliteration {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .name-meaning {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .name-benefit {
+            font-size: 0.875rem;
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 12px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--background);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .modal-arabic {
+            font-family: 'Scheherazade New', serif;
+            font-size: 4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-transliteration {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-meaning {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section h4 {
+            font-size: 1.125rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-section p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .names-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intro-card {
+                padding: 1.5rem;
+            }
+
+            .intro-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .modal-arabic {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            ← Ana Sayfa
+        </a>
+        <h1>📿 Esma-ül Hüsna</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="intro-card">
+            <div class="intro-icon">📿</div>
+            <h2>Allah'ın 99 Güzel İsmi</h2>
+            <p>
+                "Allah'ın doksan dokuz ismi vardır. Kim bunları ezberler ve sayarsa cennete girer." 
+                <br><strong>(Buhari, Deavât 68)</strong>
+            </p>
+        </div>
+
+        <div class="stats-card">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">📿</div>
+                    <div class="stat-value">99</div>
+                    <div class="stat-label">Güzel İsim</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-value" id="learnedCount">0</div>
+                    <div class="stat-label">Öğrenilen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="favoriteCount">0</div>
+                    <div class="stat-label">Favori</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="İsim ara..."
+                    oninput="searchNames()"
+                >
+            </div>
+        </div>
+
+        <div class="names-grid" id="namesContainer">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+    <div class="modal" id="nameModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalBody">
+                <!-- JavaScript ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ESMAUL_HUSNA = [
+            { number: 1, arabic: "اَلرَّحْمٰنُ", transliteration: "Er-Rahman", meaning: "Merhamet eden, acıyan", benefit: "Merhamet ve şefkat artışı" },
+            { number: 2, arabic: "اَلرَّح۪يمُ", transliteration: "Er-Rahim", meaning: "Çok merhametli olan", benefit: "Allah'ın rahmetine kavuşma" },
+            { number: 3, arabic: "اَلْمَلِكُ", transliteration: "El-Melik", meaning: "Mülkün sahibi, hükümdar", benefit: "Rızık ve bolluk" },
+            { number: 4, arabic: "اَلْقُدُّوسُ", transliteration: "El-Kuddus", meaning: "Bütün kusurlardan uzak, mukaddes", benefit: "Kalp temizliği" },
+            { number: 5, arabic: "اَلسَّلَامُ", transliteration: "Es-Selam", meaning: "Barış ve esenlik veren", benefit: "Huzur ve güven" },
+            { number: 6, arabic: "اَلْمُؤْمِنُ", transliteration: "El-Mu'min", meaning: "Güven veren, iman eden", benefit: "Korku ve endişeden kurtuluş" },
+            { number: 7, arabic: "اَلْمُهَيْمِنُ", transliteration: "El-Müheymin", meaning: "Gözetip koruyan", benefit: "Korunma ve gözetilme" },
+            { number: 8, arabic: "اَلْعَز۪يزُ", transliteration: "El-Aziz", meaning: "Üstün, güçlü, yenilmez", benefit: "Güç ve kuvvet" },
+            { number: 9, arabic: "اَلْجَبَّارُ", transliteration: "El-Cebbar", meaning: "Dilediğini yapan, her şeye gücü yeten", benefit: "Zorlukların aşılması" },
+            { number: 10, arabic: "اَلْمُتَكَبِّرُ", transliteration: "El-Mütekebbir", meaning: "Büyüklükte eşsiz olan", benefit: "Kibir ve gururu kırma" },
+            { number: 11, arabic: "اَلْخَالِقُ", transliteration: "El-Halik", meaning: "Yaratan, yaratıcı", benefit: "Yaratıcılık ve ilham" },
+            { number: 12, arabic: "اَلْبَارِئُ", transliteration: "El-Bari", meaning: "Kusursuz yaratan", benefit: "Sağlık ve afiyet" },
+            { number: 13, arabic: "اَلْمُصَوِّرُ", transliteration: "El-Musavvir", meaning: "Şekil veren, biçimlendiren", benefit: "Güzel görünüm" },
+            { number: 14, arabic: "اَلْغَفَّارُ", transliteration: "El-Ğaffar", meaning: "Çok bağışlayan", benefit: "Bağışlanma ve af" },
+            { number: 15, arabic: "اَلْقَهَّارُ", transliteration: "El-Kahhar", meaning: "Her şeyi kudretiyle boyun eğdiren", benefit: "Düşmanlara karşı üstünlük" },
+            { number: 16, arabic: "اَلْوَهَّابُ", transliteration: "El-Vehhab", meaning: "Çokça bağışlayan", benefit: "Rızık ve bereket" },
+            { number: 17, arabic: "اَلرَّزَّاقُ", transliteration: "Er-Rezzak", meaning: "Rızık veren", benefit: "Bol rızık" },
+            { number: 18, arabic: "اَلْفَتَّاحُ", transliteration: "El-Fettah", meaning: "Açan, fetih veren", benefit: "Kapıların açılması" },
+            { number: 19, arabic: "اَلْعَل۪يمُ", transliteration: "El-Alim", meaning: "Her şeyi bilen", benefit: "İlim ve bilgi" },
+            { number: 20, arabic: "اَلْقَابِضُ", transliteration: "El-Kabız", meaning: "Daraltan, tutan", benefit: "Tasarruf ve dikkat" },
+            { number: 21, arabic: "اَلْبَاسِطُ", transliteration: "El-Basıt", meaning: "Genişleten, yayan", benefit: "Bolluk ve genişlik" },
+            { number: 22, arabic: "اَلْخَافِضُ", transliteration: "El-Hafız", meaning: "Alçaltan", benefit: "Tevazu" },
+            { number: 23, arabic: "اَلرَّافِعُ", transliteration: "Er-Rafi", meaning: "Yükselten", benefit: "Makam ve mevki" },
+            { number: 24, arabic: "اَلْمُعِزُّ", transliteration: "El-Muizz", meaning: "İzzet veren", benefit: "Şeref ve onur" },
+            { number: 25, arabic: "اَلْمُذِلُّ", transliteration: "El-Müzill", meaning: "Zillete düşüren", benefit: "Düşmanların zelil olması" },
+            { number: 26, arabic: "اَلسَّم۪يعُ", transliteration: "Es-Semi", meaning: "Her şeyi işiten", benefit: "Duaların kabulü" },
+            { number: 27, arabic: "اَلْبَص۪يرُ", transliteration: "El-Basır", meaning: "Her şeyi gören", benefit: "Basiret ve görüş" },
+            { number: 28, arabic: "اَلْحَكَمُ", transliteration: "El-Hakem", meaning: "Hükümdar, hakim", benefit: "Adalet" },
+            { number: 29, arabic: "اَلْعَدْلُ", transliteration: "El-Adl", meaning: "Adalet sahibi", benefit: "Hak ve adalet" },
+            { number: 30, arabic: "اَللَّط۪يفُ", transliteration: "El-Latif", meaning: "Lütuf sahibi, incelik bilen", benefit: "Zorlukların kolaylaşması" },
+            { number: 31, arabic: "اَلْخَب۪يرُ", transliteration: "El-Habir", meaning: "Her şeyden haberdar", benefit: "İçyüzünü bilme" },
+            { number: 32, arabic: "اَلْحَل۪يمُ", transliteration: "El-Halim", meaning: "Yumuşak davranan, sabırlı", benefit: "Sabır ve yumuşaklık" },
+            { number: 33, arabic: "اَلْعَظ۪يمُ", transliteration: "El-Azim", meaning: "Büyük, ulu", benefit: "Azamet ve büyüklük" },
+            { number: 34, arabic: "اَلْغَفُورُ", transliteration: "El-Ğafur", meaning: "Bağışlayan", benefit: "Günahların affı" },
+            { number: 35, arabic: "اَلشَّكُورُ", transliteration: "Eş-Şekur", meaning: "Şükreden, karşılık veren", benefit: "Şükür ve minnet" },
+            { number: 36, arabic: "اَلْعَلِيُّ", transliteration: "El-Aliyy", meaning: "Yüce, yüksek", benefit: "Yücelik ve yükseklik" },
+            { number: 37, arabic: "اَلْكَب۪يرُ", transliteration: "El-Kebir", meaning: "Büyük", benefit: "Büyüklük ve ululuk" },
+            { number: 38, arabic: "اَلْحَف۪يظُ", transliteration: "El-Hafiz", meaning: "Koruyan, muhafaza eden", benefit: "Korunma" },
+            { number: 39, arabic: "اَلْمُق۪يتُ", transliteration: "El-Mukit", meaning: "Rızık veren, besleyen", benefit: "Rızık ve geçim" },
+            { number: 40, arabic: "اَلْحَس۪يبُ", transliteration: "El-Hasib", meaning: "Hesap gören", benefit: "Hesap ve denge" },
+            { number: 41, arabic: "اَلْجَل۪يلُ", transliteration: "El-Celil", meaning: "Celalli, heybetli", benefit: "Heybet ve saygınlık" },
+            { number: 42, arabic: "اَلْكَر۪يمُ", transliteration: "El-Kerim", meaning: "Cömert, kerem sahibi", benefit: "Cömertlik" },
+            { number: 43, arabic: "اَلرَّق۪يبُ", transliteration: "Er-Rakib", meaning: "Gözetleyen, gözeten", benefit: "Farkındalık" },
+            { number: 44, arabic: "اَلْمُج۪يبُ", transliteration: "El-Mucib", meaning: "Duaları kabul eden", benefit: "Dua kabulü" },
+            { number: 45, arabic: "اَلْوَاسِعُ", transliteration: "El-Vasi", meaning: "Geniş, sınırsız", benefit: "Genişlik ve rahatlık" },
+            { number: 46, arabic: "اَلْحَك۪يمُ", transliteration: "El-Hakim", meaning: "Hüküm ve hikmet sahibi", benefit: "Hikmet ve akıl" },
+            { number: 47, arabic: "اَلْوَدُودُ", transliteration: "El-Vedud", meaning: "Çok seven", benefit: "Sevgi ve muhabbet" },
+            { number: 48, arabic: "اَلْمَج۪يدُ", transliteration: "El-Mecid", meaning: "Şan ve şeref sahibi", benefit: "Şan ve şeref" },
+            { number: 49, arabic: "اَلْبَاعِثُ", transliteration: "El-Bais", meaning: "Yeniden dirilten", benefit: "Yenilenme ve diriliş" },
+            { number: 50, arabic: "اَلشَّه۪يدُ", transliteration: "Eş-Şehid", meaning: "Şahit olan, her şeyi gören", benefit: "Şahitlik ve hakikat" },
+            { number: 51, arabic: "اَلْحَقُّ", transliteration: "El-Hakk", meaning: "Hak ve gerçek", benefit: "Hakikat" },
+            { number: 52, arabic: "اَلْوَك۪يلُ", transliteration: "El-Vekil", meaning: "İşleri üstlenen, vekil", benefit: "Tevekkül" },
+            { number: 53, arabic: "اَلْقَوِيُّ", transliteration: "El-Kaviyy", meaning: "Kuvvetli, güçlü", benefit: "Güç ve kuvvet" },
+            { number: 54, arabic: "اَلْمَت۪ينُ", transliteration: "El-Metin", meaning: "Sağlam, metanetli", benefit: "Sağlamlık ve dayanıklılık" },
+            { number: 55, arabic: "اَلْوَلِيُّ", transliteration: "El-Veliyy", meaning: "Dost, yardımcı", benefit: "Dostluk ve yardım" },
+            { number: 56, arabic: "اَلْحَم۪يدُ", transliteration: "El-Hamid", meaning: "Övülmeye layık", benefit: "Övülme ve takdir" },
+            { number: 57, arabic: "اَلْمُحْص۪ي", transliteration: "El-Muhsi", meaning: "Her şeyi sayan", benefit: "Hesaplama ve sayma" },
+            { number: 58, arabic: "اَلْمُبْدِئُ", transliteration: "El-Mübdi", meaning: "Başlatan, var eden", benefit: "Yeni başlangıçlar" },
+            { number: 59, arabic: "اَلْمُع۪يدُ", transliteration: "El-Muid", meaning: "Tekrar eden, iade eden", benefit: "Tekrar ve dönüş" },
+            { number: 60, arabic: "اَلْمُحْي۪ي", transliteration: "El-Muhyi", meaning: "Diriten, hayat veren", benefit: "Hayat ve canlılık" },
+            { number: 61, arabic: "اَلْمُم۪يتُ", transliteration: "El-Mumit", meaning: "Öldüren", benefit: "Ölüm gerçeğinin idrakı" },
+            { number: 62, arabic: "اَلْحَيُّ", transliteration: "El-Hayy", meaning: "Diri, hayat sahibi", benefit: "Canlılık ve dinçlik" },
+            { number: 63, arabic: "اَلْقَيُّومُ", transliteration: "El-Kayyum", meaning: "Kendi kendine var olan", benefit: "Bağımsızlık" },
+            { number: 64, arabic: "اَلْوَاجِدُ", transliteration: "El-Vacid", meaning: "Bulan, hiçbir şeye muhtaç olmayan", benefit: "Zenginlik" },
+            { number: 65, arabic: "اَلْمَاجِدُ", transliteration: "El-Macid", meaning: "Şerefli, yüce", benefit: "Şeref ve itibar" },
+            { number: 66, arabic: "اَلْوَاحِدُ", transliteration: "El-Vahid", meaning: "Bir, tek", benefit: "Birlik ve beraberlik" },
+            { number: 67, arabic: "اَلصَّمَدُ", transliteration: "Es-Samed", meaning: "Her şeyin muhtaç olduğu", benefit: "Bağımsızlık" },
+            { number: 68, arabic: "اَلْقَادِرُ", transliteration: "El-Kadir", meaning: "Güç yetirebilen", benefit: "Güç ve yetenek" },
+            { number: 69, arabic: "اَلْمُقْتَدِرُ", transliteration: "El-Muktedir", meaning: "İktidar sahibi", benefit: "İktidar ve otorite" },
+            { number: 70, arabic: "اَلْمُقَدِّمُ", transliteration: "El-Mukaddim", meaning: "Öne alan, takdim eden", benefit: "Öncelik ve önem" },
+            { number: 71, arabic: "اَلْمُؤَخِّرُ", transliteration: "El-Muahhir", meaning: "Geciktiren, arkaya alan", benefit: "Sabır ve bekleme" },
+            { number: 72, arabic: "اَلْاَوَّلُ", transliteration: "El-Evvel", meaning: "İlk, başlangıç", benefit: "Öncülük" },
+            { number: 73, arabic: "اَلْاٰخِرُ", transliteration: "El-Ahir", meaning: "Son, sonsuz", benefit: "Sonsuzluk bilinci" },
+            { number: 74, arabic: "اَلظَّاهِرُ", transliteration: "Ez-Zahir", meaning: "Açık, görünen", benefit: "Açıklık" },
+            { number: 75, arabic: "اَلْبَاطِنُ", transliteration: "El-Batın", meaning: "Gizli, bâtın", benefit: "Derinlik" },
+            { number: 76, arabic: "اَلْوَالِي", transliteration: "El-Vali", meaning: "Vali, idareci", benefit: "Yönetim" },
+            { number: 77, arabic: "اَلْمُتَعَالِي", transliteration: "El-Müteali", meaning: "Çok yüce", benefit: "Yücelik" },
+            { number: 78, arabic: "اَلْبَرُّ", transliteration: "El-Berr", meaning: "İyilik eden", benefit: "İyilik ve ihsan" },
+            { number: 79, arabic: "اَلتَّوَّابُ", transliteration: "Et-Tevvab", meaning: "Tevbeyi kabul eden", benefit: "Tevbe kabulü" },
+            { number: 80, arabic: "اَلْمُنْتَقِمُ", transliteration: "El-Müntekim", meaning: "İntikam alan", benefit: "Adalet" },
+            { number: 81, arabic: "اَلْعَفُوُّ", transliteration: "El-Afüvv", meaning: "Affeden", benefit: "Af ve bağışlanma" },
+            { number: 82, arabic: "اَلرَّؤُفُ", transliteration: "Er-Rauf", meaning: "Şefkatli, merhametli", benefit: "Şefkat" },
+            { number: 83, arabic: "مَالِكُ الْمُلْكِ", transliteration: "Maliku'l-Mülk", meaning: "Mülkün sahibi", benefit: "Sahiplik" },
+            { number: 84, arabic: "ذُو الْجَلَالِ وَالْاِكْرَامِ", transliteration: "Zu'l-Celal ve'l-İkram", meaning: "Celal ve ikram sahibi", benefit: "İkram ve bereket" },
+            { number: 85, arabic: "اَلْمُقْسِطُ", transliteration: "El-Muksıt", meaning: "Adil davranan", benefit: "Adil davranış" },
+            { number: 86, arabic: "اَلْجَامِعُ", transliteration: "El-Cami", meaning: "Toplayan, bir araya getiren", benefit: "Birlik" },
+            { number: 87, arabic: "اَلْغَنِيُّ", transliteration: "El-Ğaniyy", meaning: "Zengin, muhtaç olmayan", benefit: "Zenginlik" },
+            { number: 88, arabic: "اَلْمُغْن۪ي", transliteration: "El-Muğni", meaning: "Zengin eden", benefit: "Bolluk" },
+            { number: 89, arabic: "اَلْمَانِعُ", transliteration: "El-Mani", meaning: "Engelleyen", benefit: "Kötülüklerden korunma" },
+            { number: 90, arabic: "اَلضَّٓارُّ", transliteration: "Ed-Darr", meaning: "Zarar veren", benefit: "İbret" },
+            { number: 91, arabic: "اَلنَّافِعُ", transliteration: "En-Nafi", meaning: "Fayda veren", benefit: "Fayda" },
+            { number: 92, arabic: "اَلنُّورُ", transliteration: "En-Nur", meaning: "Nur, aydınlık", benefit: "Aydınlanma" },
+            { number: 93, arabic: "اَلْهَادِي", transliteration: "El-Hadi", meaning: "Doğru yolu gösteren", benefit: "Hidayet" },
+            { number: 94, arabic: "اَلْبَد۪يعُ", transliteration: "El-Bedi", meaning: "Benzersiz yaratan", benefit: "Yaratıcılık" },
+            { number: 95, arabic: "اَلْبَاق۪ي", transliteration: "El-Baki", meaning: "Baki kalan, sonsuz", benefit: "Kalıcılık" },
+            { number: 96, arabic: "اَلْوَارِثُ", transliteration: "El-Varis", meaning: "Varis, mirasçı", benefit: "Kalıcı miras" },
+            { number: 97, arabic: "اَلرَّش۪يدُ", transliteration: "Er-Reşid", meaning: "Doğru yolu gösteren", benefit: "Doğru rehberlik" },
+            { number: 98, arabic: "اَلصَّبُورُ", transliteration: "Es-Sabur", meaning: "Sabreden, sabırlı", benefit: "Sabır" },
+            { number: 99, arabic: "اَللّٰهُ", transliteration: "Allah", meaning: "Tek ilah, tek mabud", benefit: "İman ve marifet" }
+        ];
+
+        let learned = JSON.parse(localStorage.getItem('learnedNames') || '[]');
+        let favorites = JSON.parse(localStorage.getItem('favoriteNames') || '[]');
+
+        window.addEventListener('DOMContentLoaded', function() {
+            displayNames();
+            updateStats();
+        });
+
+        function displayNames() {
+            const container = document.getElementById('namesContainer');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredNames = ESMAUL_HUSNA;
+            
+            if (searchTerm) {
+                filteredNames = filteredNames.filter(name => 
+                    name.transliteration.toLowerCase().includes(searchTerm) ||
+                    name.meaning.toLowerCase().includes(searchTerm) ||
+                    name.number.toString() === searchTerm
+                );
+            }
+
+            container.innerHTML = filteredNames.map(name => `
+                <div class="name-card" onclick="showDetails(${name.number})">
+                    <div class="name-number">${name.number}</div>
+                    <div class="name-arabic">${name.arabic}</div>
+                    <div class="name-transliteration">${name.transliteration}</div>
+                    <div class="name-meaning">${name.meaning}</div>
+                    <div class="name-benefit">💫 ${name.benefit}</div>
+                </div>
+            `).join('');
+        }
+
+        function searchNames() {
+            displayNames();
+        }
+
+        function showDetails(number) {
+            const name = ESMAUL_HUSNA[number - 1];
+            const isLearned = learned.includes(number);
+            const isFavorite = favorites.includes(number);
+            
+            const modal = document.getElementById('nameModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-arabic">${name.arabic}</div>
+                <div class="modal-transliteration">${name.transliteration}</div>
+                <div class="modal-meaning">${name.meaning}</div>
+                
+                <div class="modal-section">
+                    <h4>💫 Faydası</h4>
+                    <p>${name.benefit}</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h4>📖 Açıklama</h4>
+                    <p>Bu isim, Allah'ın ${name.meaning.toLowerCase()} sıfatını ifade eder. 
+                    Sıkça zikredilmesi ${name.benefit.toLowerCase()} sağlar.</p>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button 
+                        onclick="toggleLearned(${number})" 
+                        style="flex: 1; padding: 1rem; border: none; border-radius: 10px; 
+                               background: ${isLearned ? 'var(--primary)' : 'var(--background)'}; 
+                               color: ${isLearned ? 'white' : 'var(--text-primary)'}; 
+                               font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        ${isLearned ? '✓ Öğrenildi' : '📚 Öğren'}
+                    </button>
+                    <button 
+                        onclick="toggleFavorite(${number})" 
+                        style="flex: 1; padding: 1rem; border: none; border-radius: 10px; 
+                               background: ${isFavorite ? '#fef3c7' : 'var(--background)'}; 
+                               color: ${isFavorite ? '#f59e0b' : 'var(--text-primary)'}; 
+                               font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        ${isFavorite ? '⭐ Favoride' : '☆ Favorile'}
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('nameModal').classList.remove('show');
+        }
+
+        function toggleLearned(number) {
+            const index = learned.indexOf(number);
+            if (index > -1) {
+                learned.splice(index, 1);
+            } else {
+                learned.push(number);
+            }
+            localStorage.setItem('learnedNames', JSON.stringify(learned));
+            updateStats();
+            showDetails(number);
+        }
+
+        function toggleFavorite(number) {
+            const index = favorites.indexOf(number);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(number);
+            }
+            localStorage.setItem('favoriteNames', JSON.stringify(favorites));
+            updateStats();
+            showDetails(number);
+        }
+
+        function updateStats() {
+            document.getElementById('learnedCount').textContent = learned.length;
+            document.getElementById('favoriteCount').textContent = favorites.length;
+        }
+
+        // Close modal on outside click
+        document.getElementById('nameModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

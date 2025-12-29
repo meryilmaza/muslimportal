@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramazan Özel - İftar & Sahur Vakitleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --gold: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .countdown-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .moon-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .countdown-title { font-size: 2rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .countdown-timer { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+        .countdown-item { text-align: center; }
+        .countdown-number { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .countdown-label { font-size: 0.875rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
+
+        .times-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .times-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .time-box {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-radius: 20px;
+        }
+
+        .time-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .time-label { font-size: 1rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem; }
+        .time-value { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+
+        .progress-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .progress-title { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 2rem; }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f1f5f9;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .day-info { font-size: 1.25rem; color: var(--text-secondary); font-weight: 600; }
+
+        .tips-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .tips-card h2 { font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; text-align: center; }
+
+        .tip-item {
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .tip-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .tip-desc { color: var(--text-secondary); line-height: 1.6; }
+
+        @media (max-width: 768px) {
+            .countdown-timer { gap: 1rem; }
+            .times-grid { grid-template-columns: 1fr; }
+            .countdown-card, .times-card, .progress-section, .tips-card { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🌙 Ramazan Özel</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="countdown-card">
+            <div class="moon-icon">🌙</div>
+            <div class="countdown-title" id="countdownTitle">Ramazan'a Kalan Süre</div>
+            <div class="countdown-timer">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">0</div>
+                    <div class="countdown-label">Gün</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">0</div>
+                    <div class="countdown-label">Saat</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">0</div>
+                    <div class="countdown-label">Dakika</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">0</div>
+                    <div class="countdown-label">Saniye</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="times-card">
+            <h2 style="text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 2rem;">
+                ⏰ Bugünkü Vakitler
+            </h2>
+            <div class="times-grid">
+                <div class="time-box">
+                    <div class="time-icon">🌅</div>
+                    <div class="time-label">İmsak (Sahur Sonu)</div>
+                    <div class="time-value" id="imsak">04:30</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-icon">🌆</div>
+                    <div class="time-label">Akşam (İftar)</div>
+                    <div class="time-value" id="iftar">20:15</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-title">📊 Ramazan İlerlemesi</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+            <div class="day-info" id="dayInfo">Ramazan başlamadı</div>
+        </div>
+
+        <div class="tips-card">
+            <h2>💡 Ramazan İpuçları</h2>
+            <div class="tip-item">
+                <div class="tip-title">🕌 Sahurda Kalkmak</div>
+                <div class="tip-desc">
+                    "Sahur yemeyin, çünkü sahurda bereket vardır." (Buhari, Savm 20)
+                    Sahurda kalkıp yemek yemek sünnettir ve bereketi vardır.
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-title">⚡ İftarı Hızlı Açmak</div>
+                <div class="tip-desc">
+                    İftar vaktinde hemen orucunuzu açın. Öncelikle hurma veya su ile açmak sünnettir.
+                    "İnsanlar hayır üzere oldukça, iftarı geciktirmezler." (Buhari, Savm 45)
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-title">📖 Kuran Okumak</div>
+                <div class="tip-desc">
+                    Ramazan, Kuran-ı Kerim'in indirildiği aydır. Bu ayda bol bol Kuran okumaya özen gösterin.
+                    Günde 4 sayfa okursanız ayda bir hatim tamamlarsınız.
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-title">🌙 Teravih Namazı</div>
+                <div class="tip-desc">
+                    Teravih namazı, Ramazan ayına has bir sünnettir. Yatsı namazından sonra kılınır.
+                    "Kim Ramazan'da imanla ve sevap umarak teravih kılarsa, geçmiş günahları bağışlanır." (Buhari)
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-title">💰 Fitre ve Zekat</div>
+                <div class="tip-desc">
+                    Fitre vermek, Ramazan'ın farzlarından biridir. Bayramdan önce verin.
+                    Zekatınız varsa, Ramazan ayında vermeniz daha faziletlidir.
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-title">✨ Kadir Gecesi</div>
+                <div class="tip-desc">
+                    Ramazan'ın son 10 gününde Kadir Gecesi'ni arayın. Genellikle 27. gece kabul edilir.
+                    Bu gece bin aydan hayırlıdır. Bol bol ibadet yapın ve dua edin.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 2025 Ramazan başlangıcı (yaklaşık - gerçek tarih ay görülmesine bağlı)
+        const RAMAZAN_START = new Date('2025-02-28T00:00:00');
+        const RAMAZAN_DAYS = 30;
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = RAMAZAN_START - now;
+
+            if (diff > 0) {
+                // Ramazan başlamadı
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+
+                document.getElementById('countdownTitle').textContent = "🌙 Ramazan'a Kalan Süre";
+                document.getElementById('dayInfo').textContent = "Ramazan başlamadı";
+                document.getElementById('progressFill').style.width = '0%';
+                document.getElementById('progressText').textContent = '0%';
+            } else {
+                // Ramazan başladı
+                const ramazanEnd = new Date(RAMAZAN_START);
+                ramazanEnd.setDate(ramazanEnd.getDate() + RAMAZAN_DAYS);
+                
+                if (now < ramazanEnd) {
+                    // Ramazan devam ediyor
+                    const daysPassed = Math.floor((now - RAMAZAN_START) / (1000 * 60 * 60 * 24)) + 1;
+                    const progress = (daysPassed / RAMAZAN_DAYS) * 100;
+                    
+                    const remainingDiff = ramazanEnd - now;
+                    const days = Math.floor(remainingDiff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((remainingDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((remainingDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((remainingDiff % (1000 * 60)) / 1000);
+
+                    document.getElementById('days').textContent = days;
+                    document.getElementById('hours').textContent = hours;
+                    document.getElementById('minutes').textContent = minutes;
+                    document.getElementById('seconds').textContent = seconds;
+
+                    document.getElementById('countdownTitle').textContent = "🎉 Ramazan Bayramı'na Kalan Süre";
+                    document.getElementById('dayInfo').textContent = 
+                        `Ramazan'ın ${daysPassed}. günü (${RAMAZAN_DAYS - daysPassed} gün kaldı)`;
+                    document.getElementById('progressFill').style.width = progress + '%';
+                    document.getElementById('progressText').textContent = Math.round(progress) + '%';
+                } else {
+                    // Ramazan bitti
+                    document.getElementById('countdownTitle').textContent = "✨ Ramazan Mübarek Olsun";
+                    document.getElementById('days').textContent = "—";
+                    document.getElementById('hours').textContent = "—";
+                    document.getElementById('minutes').textContent = "—";
+                    document.getElementById('seconds').textContent = "—";
+                    document.getElementById('dayInfo').textContent = "Ramazan sona erdi. Hayırlı bayramlar!";
+                    document.getElementById('progressFill').style.width = '100%';
+                    document.getElementById('progressText').textContent = '100%';
+                }
+            }
+        }
+
+        function updateTimes() {
+            // Şehir seçilirse namaz vakitleri API'den çekilebilir
+            // Şimdilik örnek vakitler
+            const now = new Date();
+            const month = now.getMonth();
+            
+            // Yaz/Kış vakitleri (örnek)
+            if (month >= 3 && month <= 8) {
+                // Yaz vakitleri
+                document.getElementById('imsak').textContent = '03:45';
+                document.getElementById('iftar').textContent = '20:45';
+            } else {
+                // Kış vakitleri
+                document.getElementById('imsak').textContent = '05:30';
+                document.getElementById('iftar').textContent = '17:45';
+            }
+        }
+
+        // Update every second
+        updateCountdown();
+        updateTimes();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>

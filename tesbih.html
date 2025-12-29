@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Tesbih - Zikir Sayacı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #8b5cf6;
+            --gold: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .tesbih-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .zikir-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .zikir-btn {
+            padding: 1.25rem 2rem;
+            border: 3px solid var(--border);
+            border-radius: 15px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            color: var(--text-primary);
+            font-family: 'Scheherazade New', serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .zikir-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .zikir-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .zikir-text {
+            font-size: 1.5rem;
+        }
+
+        .zikir-translation {
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+        }
+
+        .counter-display {
+            margin: 3rem 0;
+        }
+
+        .current-zikir {
+            font-family: 'Scheherazade New', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .count-number {
+            font-size: 6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-variant-numeric: tabular-nums;
+            transition: all 0.2s;
+        }
+
+        .count-number.pulse {
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .target-info {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--background);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .counter-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .counter-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .counter-btn:active {
+            transform: scale(0.95);
+            animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4), 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            100% {
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4), 0 0 0 40px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .control-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .reset-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .target-selector {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .target-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .target-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .target-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .completion-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .completion-message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .completion-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .completion-message h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .completion-message p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .tesbih-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .count-number {
+                font-size: 4rem;
+            }
+
+            .current-zikir {
+                font-size: 2rem;
+            }
+
+            .counter-btn {
+                width: 150px;
+                height: 150px;
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            ← Ana Sayfa
+        </a>
+        <h1>🔢 Dijital Tesbih</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="tesbih-card">
+            <div class="zikir-selector">
+                <button class="zikir-btn active" onclick="selectZikir('subhanallah')">
+                    <span>
+                        <div class="zikir-text">سُبْحَانَ اللّٰهِ</div>
+                        <div class="zikir-translation">Subhanallah</div>
+                    </span>
+                    <span>✓</span>
+                </button>
+                <button class="zikir-btn" onclick="selectZikir('alhamdulillah')">
+                    <span>
+                        <div class="zikir-text">اَلْحَمْدُ لِلّٰهِ</div>
+                        <div class="zikir-translation">Alhamdulillah</div>
+                    </span>
+                    <span></span>
+                </button>
+                <button class="zikir-btn" onclick="selectZikir('allahuakbar')">
+                    <span>
+                        <div class="zikir-text">اَللّٰهُ اَكْبَرُ</div>
+                        <div class="zikir-translation">Allahu Akbar</div>
+                    </span>
+                    <span></span>
+                </button>
+            </div>
+
+            <div class="target-selector">
+                <button class="target-btn active" onclick="setTarget(33)">33</button>
+                <button class="target-btn" onclick="setTarget(99)">99</button>
+                <button class="target-btn" onclick="setTarget(100)">100</button>
+                <button class="target-btn" onclick="setTarget(1000)">1000</button>
+            </div>
+
+            <div class="counter-display">
+                <div class="current-zikir" id="currentZikir">سُبْحَانَ اللّٰهِ</div>
+                <div class="count-number" id="countNumber">0</div>
+                <div class="target-info" id="targetInfo">Hedef: 33</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <button class="counter-btn" onclick="incrementCount()">
+                TIKLA
+            </button>
+
+            <div class="controls">
+                <button class="control-btn reset-btn" onclick="resetCount()">
+                    🔄 Sıfırla
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-primary);">
+                📊 Bugünkü İstatistikler
+            </h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="statSubhanallah">0</div>
+                    <div class="stat-label">Subhanallah</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statAlhamdulillah">0</div>
+                    <div class="stat-label">Alhamdulillah</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statAllahuakbar">0</div>
+                    <div class="stat-label">Allahu Akbar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="completion-message" id="completionMessage">
+        <div class="completion-icon">🎉</div>
+        <h2>Tebrikler!</h2>
+        <p>Hedefinize ulaştınız!</p>
+    </div>
+
+    <script>
+        const zikirData = {
+            subhanallah: {
+                arabic: 'سُبْحَانَ اللّٰهِ',
+                name: 'Subhanallah'
+            },
+            alhamdulillah: {
+                arabic: 'اَلْحَمْدُ لِلّٰهِ',
+                name: 'Alhamdulillah'
+            },
+            allahuakbar: {
+                arabic: 'اَللّٰهُ اَكْبَرُ',
+                name: 'Allahu Akbar'
+            }
+        };
+
+        let currentZikir = 'subhanallah';
+        let count = 0;
+        let target = 33;
+        let todayStats = {
+            subhanallah: 0,
+            alhamdulillah: 0,
+            allahuakbar: 0
+        };
+
+        // Load saved data
+        window.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            updateDisplay();
+        });
+
+        function loadStats() {
+            const saved = localStorage.getItem('tesbihStats');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const today = new Date().toDateString();
+                if (data.date === today) {
+                    todayStats = data.stats;
+                } else {
+                    // New day, reset stats
+                    todayStats = { subhanallah: 0, alhamdulillah: 0, allahuakbar: 0 };
+                }
+            }
+            updateStatsDisplay();
+        }
+
+        function saveStats() {
+            const data = {
+                date: new Date().toDateString(),
+                stats: todayStats
+            };
+            localStorage.setItem('tesbihStats', JSON.stringify(data));
+        }
+
+        function selectZikir(zikir) {
+            currentZikir = zikir;
+            
+            // Update buttons
+            document.querySelectorAll('.zikir-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.querySelector('span:last-child').textContent = '';
+            });
+            
+            event.target.closest('.zikir-btn').classList.add('active');
+            event.target.closest('.zikir-btn').querySelector('span:last-child').textContent = '✓';
+            
+            // Update display
+            document.getElementById('currentZikir').textContent = zikirData[zikir].arabic;
+            
+            // Reset count for new zikir
+            count = 0;
+            updateDisplay();
+        }
+
+        function setTarget(newTarget) {
+            target = newTarget;
+            
+            // Update buttons
+            document.querySelectorAll('.target-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateDisplay();
+        }
+
+        function incrementCount() {
+            count++;
+            todayStats[currentZikir]++;
+            
+            // Pulse animation
+            const countElement = document.getElementById('countNumber');
+            countElement.classList.add('pulse');
+            setTimeout(() => countElement.classList.remove('pulse'), 300);
+            
+            // Vibrate on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            updateDisplay();
+            updateStatsDisplay();
+            saveStats();
+            
+            // Check if target reached
+            if (count === target) {
+                showCompletion();
+            }
+        }
+
+        function resetCount() {
+            if (confirm('Sayacı sıfırlamak istediğinizden emin misiniz?')) {
+                count = 0;
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('countNumber').textContent = count;
+            document.getElementById('targetInfo').textContent = `Hedef: ${target}`;
+            
+            const progress = (count / target) * 100;
+            document.getElementById('progressFill').style.width = Math.min(progress, 100) + '%';
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById('statSubhanallah').textContent = todayStats.subhanallah;
+            document.getElementById('statAlhamdulillah').textContent = todayStats.alhamdulillah;
+            document.getElementById('statAllahuakbar').textContent = todayStats.allahuakbar;
+        }
+
+        function showCompletion() {
+            const message = document.getElementById('completionMessage');
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+                count = 0;
+                updateDisplay();
+            }, 3000);
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                incrementCount();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İbadet Takibi - Günlük İbadet Kaydı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        .stats-card { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; }
+        .stat-item { text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border-radius: 12px; }
+        .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .prayer-tracker { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .prayer-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 0.5rem; background: #f8fafc; border-radius: 12px; }
+        .prayer-name { font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
+        .check-btn { width: 40px; height: 40px; border: 3px solid #e2e8f0; border-radius: 50%; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: all 0.3s; }
+        .check-btn.checked { background: var(--primary); border-color: var(--primary); color: white; }
+        .streak-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); text-align: center; }
+        .streak-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .streak-number { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .streak-label { font-size: 1.125rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📈 İbadet Takibi</h1>
+        <div style="width: 120px;"></div>
+    </div>
+    <div class="container">
+        <div class="stats-card">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-primary);">📊 Bu Hafta</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">🕌</div>
+                    <div class="stat-value" id="prayerCount">28</div>
+                    <div class="stat-label">Namaz</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-value" id="quranPages">42</div>
+                    <div class="stat-label">Sayfa Kuran</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🔢</div>
+                    <div class="stat-value" id="tasbihCount">850</div>
+                    <div class="stat-label">Tesbih</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🤲</div>
+                    <div class="stat-value" id="duaCount">15</div>
+                    <div class="stat-label">Dua</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prayer-tracker">
+            <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">🕌 Bugünkü Namazlar</h2>
+            <div class="prayer-item">
+                <div class="prayer-name">
+                    <span>🌅</span>
+                    <span>Sabah</span>
+                </div>
+                <div class="check-btn" onclick="togglePrayer(this)"></div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name">
+                    <span>☀️</span>
+                    <span>Öğle</span>
+                </div>
+                <div class="check-btn" onclick="togglePrayer(this)"></div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name">
+                    <span>🌤️</span>
+                    <span>İkindi</span>
+                </div>
+                <div class="check-btn" onclick="togglePrayer(this)"></div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name">
+                    <span>🌆</span>
+                    <span>Akşam</span>
+                </div>
+                <div class="check-btn" onclick="togglePrayer(this)"></div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name">
+                    <span>🌃</span>
+                    <span>Yatsı</span>
+                </div>
+                <div class="check-btn" onclick="togglePrayer(this)"></div>
+            </div>
+        </div>
+
+        <div class="streak-card">
+            <div class="streak-icon">🔥</div>
+            <div class="streak-number" id="streakDays">7</div>
+            <div class="streak-label">Gün Ardışık İbadet</div>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Harika gidiyorsun! Her gün en az bir namaz kıldın.
+            </p>
+        </div>
+    </div>
+    <script>
+        function togglePrayer(btn) {
+            btn.classList.toggle('checked');
+            btn.textContent = btn.classList.contains('checked') ? '✓' : '';
+            updateStats();
+        }
+
+        function updateStats() {
+            const checked = document.querySelectorAll('.check-btn.checked').length;
+            let current = parseInt(document.getElementById('prayerCount').textContent);
+            if (checked > 0) {
+                document.getElementById('prayerCount').textContent = current + 1;
+            }
+        }
+
+        // Load saved data
+        const saved = localStorage.getItem('todayPrayers');
+        if (saved) {
+            const checks = JSON.parse(saved);
+            const btns = document.querySelectorAll('.check-btn');
+            checks.forEach((checked, i) => {
+                if (checked && btns[i]) {
+                    btns[i].classList.add('checked');
+                    btns[i].textContent = '✓';
+                }
+            });
+        }
+
+        // Save on change
+        document.querySelectorAll('.check-btn').forEach((btn, i) => {
+            btn.addEventListener('click', function() {
+                const checks = Array.from(document.querySelectorAll('.check-btn')).map(b => b.classList.contains('checked'));
+                localStorage.setItem('todayPrayers', JSON.stringify(checks));
+            });
+        });
+    </script>
+</body>
+</html>

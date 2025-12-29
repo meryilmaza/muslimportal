@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dua Koleksiyonu - Günlük Dualar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --accent: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .duas-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .dua-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .dua-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .dua-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .dua-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dua-icon {
+            font-size: 2rem;
+        }
+
+        .dua-title h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .dua-category {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .dua-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--background);
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn.favorited {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .dua-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .dua-arabic {
+            font-family: 'Scheherazade New', serif;
+            font-size: 2rem;
+            line-height: 2.5;
+            text-align: right;
+            direction: rtl;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 12px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .dua-transliteration {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 10px;
+        }
+
+        .dua-translation {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            background: var(--background);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .dua-reference {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .dua-card {
+                padding: 1.5rem;
+            }
+
+            .dua-arabic {
+                font-size: 1.5rem;
+                line-height: 2.2;
+            }
+
+            .dua-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            ← Ana Sayfa
+        </a>
+        <h1>🤲 Dua Koleksiyonu</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Dua ara..."
+                    oninput="searchDuas()"
+                >
+            </div>
+            <div class="categories">
+                <button class="category-btn active" onclick="filterCategory('all')">
+                    Tümü
+                </button>
+                <button class="category-btn" onclick="filterCategory('sabah')">
+                    🌅 Sabah
+                </button>
+                <button class="category-btn" onclick="filterCategory('aksam')">
+                    🌆 Akşam
+                </button>
+                <button class="category-btn" onclick="filterCategory('yemek')">
+                    🍽️ Yemek
+                </button>
+                <button class="category-btn" onclick="filterCategory('yolculuk')">
+                    ✈️ Yolculuk
+                </button>
+                <button class="category-btn" onclick="filterCategory('hastalık')">
+                    🏥 Hastalık
+                </button>
+                <button class="category-btn" onclick="filterCategory('genel')">
+                    📖 Genel
+                </button>
+            </div>
+        </div>
+
+        <div class="duas-grid" id="duasContainer">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+    <script>
+        const DUAS_DATA = [
+            {
+                id: 1,
+                title: "Sabah Duası",
+                category: "sabah",
+                icon: "🌅",
+                arabic: "اَللّٰهُمَّ بِكَ اَصْبَحْنَا وَبِكَ اَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَاِلَيْكَ النُّشُورُ",
+                transliteration: "Allâhümme bike asbahnâ ve bike emseynâ ve bike nahyâ ve bike nemûtü ve ileyke'n-nüşûr",
+                translation: "Allah'ım! Seninle sabahladık, seninle akşamladık, seninle yaşıyor ve seninle ölüyoruz ve dönüş sanadır.",
+                reference: "Tirmizi, Deavât 13"
+            },
+            {
+                id: 2,
+                title: "Akşam Duası",
+                category: "aksam",
+                icon: "🌆",
+                arabic: "اَللّٰهُمَّ بِكَ اَمْسَيْنَا وَبِكَ اَصْبَحْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَاِلَيْكَ الْمَص۪يرُ",
+                transliteration: "Allâhümme bike emseynâ ve bike asbahnâ ve bike nahyâ ve bike nemûtü ve ileyke'l-masîr",
+                translation: "Allah'ım! Seninle akşamladık, seninle sabahladık, seninle yaşıyor ve seninle ölüyoruz ve varış sanadır.",
+                reference: "Tirmizi, Deavât 13"
+            },
+            {
+                id: 3,
+                title: "Yemekten Önce Dua",
+                category: "yemek",
+                icon: "🍽️",
+                arabic: "بِسْمِ اللّٰهِ وَعَلٰى بَرَكَةِ اللّٰهِ",
+                transliteration: "Bismillâhi ve alâ bereketi'llâh",
+                translation: "Allah'ın adıyla ve Allah'ın bereketi üzere (başlıyorum).",
+                reference: "İbn Mace, Et'ime 6"
+            },
+            {
+                id: 4,
+                title: "Yemekten Sonra Dua",
+                category: "yemek",
+                icon: "🍽️",
+                arabic: "اَلْحَمْدُ لِلّٰهِ الَّذ۪ي اَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِم۪ينَ",
+                transliteration: "Elhamdü lillâhillezî et'amenâ ve sakānâ ve cealenâ müslimîn",
+                translation: "Bizi yediren, içiren ve müslüman kılan Allah'a hamdolsun.",
+                reference: "Ebu Davud, Et'ime 52"
+            },
+            {
+                id: 5,
+                title: "Yola Çıkarken Dua",
+                category: "yolculuk",
+                icon: "✈️",
+                arabic: "بِسْمِ اللّٰهِۙ تَوَكَّلْتُ عَلَى اللّٰهِۜ لَا حَوْلَ وَلَا قُوَّةَ اِلَّا بِاللّٰهِ",
+                transliteration: "Bismillâh, tevekkeltu alallâh, lâ havle velâ kuvvete illâ billâh",
+                translation: "Allah'ın adıyla, Allah'a tevekkül ettim. Güç ve kuvvet ancak Allah'tandır.",
+                reference: "Ebu Davud, Edeb 102"
+            },
+            {
+                id: 6,
+                title: "Araçta Okunacak Dua",
+                category: "yolculuk",
+                icon: "✈️",
+                arabic: "سُبْحَانَ الَّذ۪ي سَخَّرَ لَنَا هٰذَا وَمَا كُنَّا لَهُ مُقْرِن۪ينَ وَاِنَّٓا اِلٰى رَبِّنَا لَمُنْقَلِبُونَ",
+                transliteration: "Sübhânellezî sehhara lenâ hâzâ ve mâ künnâ lehû mukrinîn. Ve innâ ilâ rabbinâ lemünkalibûn",
+                translation: "Bunu emrimize veren Allah'ı tesbih ederiz. Yoksa biz buna güç yetiremezdik. Şüphesiz biz Rabbimize döneceğiz.",
+                reference: "Zuhruf Suresi, 13-14"
+            },
+            {
+                id: 7,
+                title: "Hasta Ziyareti Duası",
+                category: "hastalık",
+                icon: "🏥",
+                arabic: "اَللّٰهُمَّ اَذْهِبِ الْبَأْسَۙ رَبَّ النَّاسِۙ اِشْفِۙ اَنْتَ الشَّافِيۜ لَا شِفَٓاءَ اِلَّا شِفَٓاؤُكَۜ شِفَٓاءً لَا يُغَادِرُ سَقَماً",
+                transliteration: "Allâhümme ezhib'il-be'se rabbe'n-nâs, işfi ente'ş-şâfî, lâ şifâe illâ şifâ'ük, şifâen lâ yüğâdiru sakamâ",
+                translation: "Allah'ım! İnsanların Rabbi! Hastalığı gider, şifa ver. Şifa veren Sensin. Senin şifandan başka şifa yoktur. Hiçbir hastalık bırakmayan bir şifa ver.",
+                reference: "Buhari, Tıb 38"
+            },
+            {
+                id: 8,
+                title: "Uyku Duası",
+                category: "genel",
+                icon: "😴",
+                arabic: "اَللّٰهُمَّ بِاسْمِكَ اَمُوتُ وَاَحْيَا",
+                transliteration: "Allâhümme bismike emûtü ve ahyâ",
+                translation: "Allah'ım! Senin adınla ölür ve diriliyorum.",
+                reference: "Buhari, Deavât 7"
+            },
+            {
+                id: 9,
+                title: "Uykudan Uyanırken",
+                category: "sabah",
+                icon: "☀️",
+                arabic: "اَلْحَمْدُ لِلّٰهِ الَّذ۪ي اَحْيَانَا بَعْدَ مَٓا اَمَاتَنَا وَاِلَيْهِ النُّشُورُ",
+                transliteration: "Elhamdü lillâhillezî ahyânâ ba'de mâ emâtenâ ve ileyhi'n-nüşûr",
+                translation: "Bizi, öldürdükten sonra (uykudan) dirilten Allah'a hamdolsun. Dönüş O'nadır.",
+                reference: "Buhari, Deavât 7"
+            },
+            {
+                id: 10,
+                title: "Sıkıntı Anında Dua",
+                category: "genel",
+                icon: "😰",
+                arabic: "لَا اِلٰهَ اِلَّا اللّٰهُ الْعَظ۪يمُ الْحَل۪يمُۚ لَا اِلٰهَ اِلَّا اللّٰهُ رَبُّ الْعَرْشِ الْعَظ۪يمِۚ لَا اِلٰهَ اِلَّا اللّٰهُ رَبُّ السَّمٰوَاتِ وَرَبُّ الْاَرْضِ وَرَبُّ الْعَرْشِ الْكَر۪يمِ",
+                transliteration: "Lâ ilâhe illallâhu'l-azîmu'l-halîm. Lâ ilâhe illallâhu rabbu'l-arşi'l-azîm. Lâ ilâhe illallâhu rabbu's-semâvâti ve rabbu'l-ardı ve rabbu'l-arşi'l-kerîm",
+                translation: "Yüce ve Halim olan Allah'tan başka ilah yoktur. Büyük Arş'ın Rabbi olan Allah'tan başka ilah yoktur. Göklerin Rabbi, yerin Rabbi ve Kerim Arş'ın Rabbi olan Allah'tan başka ilah yoktur.",
+                reference: "Buhari, Deavât 33"
+            },
+            {
+                id: 11,
+                title: "Çocuk İçin Dua",
+                category: "genel",
+                icon: "👶",
+                arabic: "اَللّٰهُمَّ بَارِكْ لَهُمْ فِي الْمَوْهُوبِۙ وَارْزُقْهُمْ بِرَّهُ",
+                transliteration: "Allâhümme bârik lehüm fi'l-mevhûbi verzukhüm birreh",
+                translation: "Allah'ım! Kendilerine verdiğin bu çocukta bereket ver ve onu onlara itaatli kıl.",
+                reference: "İbn Hibban, Sahih 12/225"
+            },
+            {
+                id: 12,
+                title: "Borç Duası",
+                category: "genel",
+                icon: "💰",
+                arabic: "اَللّٰهُمَّ اكْفِن۪ي بِحَلَالِكَ عَنْ حَرَامِكَ وَاَغْنِن۪ي بِفَضْلِكَ عَمَّنْ سِوَاكَ",
+                transliteration: "Allâhümme-kfinî bi-halâlike an harâmik ve ağninî bi-fadlike ammen sivâk",
+                translation: "Allah'ım! Helalinle beni haramından koru ve lütfunla beni başkasından müstağni kıl.",
+                reference: "Tirmizi, Deavât 86"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let favorites = JSON.parse(localStorage.getItem('favoriteDuas') || '[]');
+
+        window.addEventListener('DOMContentLoaded', function() {
+            displayDuas();
+        });
+
+        function displayDuas() {
+            const container = document.getElementById('duasContainer');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredDuas = DUAS_DATA;
+            
+            // Category filter
+            if (currentCategory !== 'all') {
+                filteredDuas = filteredDuas.filter(dua => dua.category === currentCategory);
+            }
+            
+            // Search filter
+            if (searchTerm) {
+                filteredDuas = filteredDuas.filter(dua => 
+                    dua.title.toLowerCase().includes(searchTerm) ||
+                    dua.translation.toLowerCase().includes(searchTerm) ||
+                    dua.transliteration.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (filteredDuas.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <h3>Dua Bulunamadı</h3>
+                        <p>Arama kriterlerinize uygun dua bulunmamaktadır.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredDuas.map(dua => `
+                <div class="dua-card" data-category="${dua.category}">
+                    <div class="dua-header">
+                        <div class="dua-title">
+                            <span class="dua-icon">${dua.icon}</span>
+                            <div>
+                                <h3>${dua.title}</h3>
+                                <div class="dua-category">${getCategoryName(dua.category)}</div>
+                            </div>
+                        </div>
+                        <div class="dua-actions">
+                            <button class="action-btn ${favorites.includes(dua.id) ? 'favorited' : ''}" 
+                                    onclick="toggleFavorite(${dua.id})" 
+                                    title="Favorilere Ekle">
+                                ${favorites.includes(dua.id) ? '⭐' : '☆'}
+                            </button>
+                            <button class="action-btn" onclick="copyDua(${dua.id})" title="Kopyala">
+                                📋
+                            </button>
+                            <button class="action-btn" onclick="shareDua(${dua.id})" title="Paylaş">
+                                🔗
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dua-content">
+                        <div class="dua-arabic">${dua.arabic}</div>
+                        <div class="dua-transliteration">${dua.transliteration}</div>
+                        <div class="dua-translation">${dua.translation}</div>
+                    </div>
+                    <div class="dua-reference">📖 Kaynak: ${dua.reference}</div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'sabah': '🌅 Sabah Duaları',
+                'aksam': '🌆 Akşam Duaları',
+                'yemek': '🍽️ Yemek Duaları',
+                'yolculuk': '✈️ Yolculuk Duaları',
+                'hastalık': '🏥 Hastalık Duaları',
+                'genel': '📖 Genel Dualar'
+            };
+            return names[category] || category;
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Update buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayDuas();
+        }
+
+        function searchDuas() {
+            displayDuas();
+        }
+
+        function toggleFavorite(duaId) {
+            const index = favorites.indexOf(duaId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(duaId);
+            }
+            localStorage.setItem('favoriteDuas', JSON.stringify(favorites));
+            displayDuas();
+        }
+
+        function copyDua(duaId) {
+            const dua = DUAS_DATA.find(d => d.id === duaId);
+            const text = `${dua.title}\n\n${dua.arabic}\n\n${dua.transliteration}\n\n${dua.translation}\n\n${dua.reference}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Dua kopyalandı!');
+            });
+        }
+
+        function shareDua(duaId) {
+            const dua = DUAS_DATA.find(d => d.id === duaId);
+            const text = `${dua.title}\n\n${dua.arabic}\n\n${dua.transliteration}\n\n${dua.translation}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: dua.title,
+                    text: text
+                });
+            } else {
+                copyDua(duaId);
+            }
+        }
+    </script>
+</body>
+</html>

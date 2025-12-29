@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosyal - Topluluk & Paylaşım</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+        .share-card { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .share-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+        .share-input { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 1rem; margin-bottom: 1rem; resize: vertical; min-height: 100px; }
+        .share-btn { padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary) 0%, #059669 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; }
+        .post { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+        .post-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .post-avatar { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .post-info { flex: 1; }
+        .post-author { font-weight: 700; color: var(--text-primary); }
+        .post-time { font-size: 0.875rem; color: var(--text-secondary); }
+        .post-content { color: var(--text-primary); line-height: 1.6; margin-bottom: 1rem; }
+        .post-actions { display: flex; gap: 1rem; }
+        .action-btn { padding: 0.5rem 1rem; border: none; background: #f1f5f9; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        .action-btn:hover { background: #e2e8f0; }
+        .leaderboard { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .leader-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%); border-radius: 12px; }
+        .leader-rank { font-size: 1.5rem; font-weight: 800; color: var(--primary); width: 40px; text-align: center; }
+        .leader-name { flex: 1; font-weight: 600; }
+        .leader-score { font-weight: 800; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>💬 Sosyal</h1>
+        <div style="width: 120px;"></div>
+    </div>
+    <div class="container">
+        <div class="share-card">
+            <div class="share-title">✍️ Paylaşım Yap</div>
+            <textarea class="share-input" placeholder="Düşüncelerinizi paylaşın..." id="shareInput"></textarea>
+            <button class="share-btn" onclick="sharePost()">📤 Paylaş</button>
+        </div>
+        <div id="postsContainer">
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">👤</div>
+                    <div class="post-info">
+                        <div class="post-author">Ahmet Y.</div>
+                        <div class="post-time">2 saat önce</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Bugün Mevlid Kandilimiz mübarek olsun. Allah kabul etsin! 🌙
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="likePost(this)">
+                        <span>❤️</span> <span class="like-count">12</span>
+                    </button>
+                    <button class="action-btn">
+                        <span>💬</span> <span>3</span>
+                    </button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">👤</div>
+                    <div class="post-info">
+                        <div class="post-author">Fatma K.</div>
+                        <div class="post-time">5 saat önce</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Bugün ilk defa tam hatim yaptım! Elhamdülillah 📖✨
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="likePost(this)">
+                        <span>❤️</span> <span class="like-count">24</span>
+                    </button>
+                    <button class="action-btn">
+                        <span>💬</span> <span>8</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="leaderboard">
+            <h2 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; text-align: center;">
+                🏆 Bu Hafta Liderler
+            </h2>
+            <div class="leader-item">
+                <div class="leader-rank">🥇</div>
+                <div class="leader-name">Ali D.</div>
+                <div class="leader-score">2,450 puan</div>
+            </div>
+            <div class="leader-item">
+                <div class="leader-rank">🥈</div>
+                <div class="leader-name">Zeynep M.</div>
+                <div class="leader-score">2,180 puan</div>
+            </div>
+            <div class="leader-item">
+                <div class="leader-rank">🥉</div>
+                <div class="leader-name">Mehmet A.</div>
+                <div class="leader-score">1,920 puan</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function sharePost() {
+            const input = document.getElementById('shareInput');
+            if (!input.value.trim()) {
+                alert('Lütfen bir şeyler yazın');
+                return;
+            }
+            alert('✅ Paylaşımınız yayınlandı!');
+            input.value = '';
+        }
+        function likePost(btn) {
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.textContent);
+            countSpan.textContent = count + 1;
+            btn.style.background = '#fee2e2';
+            btn.style.color = '#dc2626';
+        }
+    </script>
+</body>
+</html>

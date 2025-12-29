@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandil Geceleri - Mübarek Geceler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --gold: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        .next-kandil {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .star-icon { font-size: 5rem; margin-bottom: 1rem; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .next-title { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .next-name { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem; }
+        .next-date { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .countdown-small { display: flex; gap: 1.5rem; justify-content: center; }
+        .countdown-small-item { text-align: center; }
+        .countdown-small-num { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .countdown-small-label { font-size: 0.75rem; color: var(--text-secondary); }
+
+        .kandiller-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .kandil-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .kandil-card:hover { transform: translateY(-5px); }
+
+        .kandil-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .kandil-icon { font-size: 3rem; }
+        .kandil-name { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+        .kandil-date { font-size: 1rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 1.5rem; }
+        .kandil-desc { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+
+        .kandil-section { margin-bottom: 1.5rem; }
+        .kandil-section h4 { color: var(--primary); font-size: 1.125rem; margin-bottom: 0.75rem; }
+        .kandil-section p, .kandil-section li { color: var(--text-secondary); line-height: 1.6; margin: 0.5rem 0; }
+        .kandil-section ul { padding-left: 1.5rem; }
+
+        .dua-box {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .dua-arabic {
+            font-family: 'Scheherazade New', serif;
+            font-size: 1.5rem;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .dua-translation {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .kandiller-grid { grid-template-columns: 1fr; }
+            .next-kandil { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>✨ Kandil Geceleri</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="next-kandil">
+            <div class="star-icon">✨</div>
+            <div class="next-title">Yaklaşan Kandil</div>
+            <div class="next-name" id="nextKandilName">—</div>
+            <div class="next-date" id="nextKandilDate">—</div>
+            <div class="countdown-small">
+                <div class="countdown-small-item">
+                    <div class="countdown-small-num" id="nextDays">0</div>
+                    <div class="countdown-small-label">GÜN</div>
+                </div>
+                <div class="countdown-small-item">
+                    <div class="countdown-small-num" id="nextHours">0</div>
+                    <div class="countdown-small-label">SAAT</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kandiller-grid">
+            <div class="kandil-card">
+                <div class="kandil-header">
+                    <div class="kandil-icon">🌙</div>
+                    <div class="kandil-name">Mevlid Kandili</div>
+                </div>
+                <div class="kandil-date">12 Rebiülevvel (Hz. Muhammed'in Doğum Günü)</div>
+                <div class="kandil-desc">
+                    Hz. Muhammed (s.a.v)'in doğum günü olan bu mübarek gece, 
+                    İslam âleminde büyük bir sevinç ve coşku ile kutlanır.
+                </div>
+                <div class="kandil-section">
+                    <h4>📖 Önemi</h4>
+                    <p>
+                        Peygamber Efendimiz'in dünyaya teşrif ettiği gün, 
+                        rahmet kapılarının açıldığı mübarek bir gündür.
+                    </p>
+                </div>
+                <div class="kandil-section">
+                    <h4>🤲 Yapılacaklar</h4>
+                    <ul>
+                        <li>Peygamberimize salavat getirmek</li>
+                        <li>Mevlid okumak veya dinlemek</li>
+                        <li>İbadet ve zikir yapmak</li>
+                        <li>Sadaka vermek</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="kandil-card">
+                <div class="kandil-header">
+                    <div class="kandil-icon">✨</div>
+                    <div class="kandil-name">Regaib Kandili</div>
+                </div>
+                <div class="kandil-date">Recep ayının ilk Cuma gecesi</div>
+                <div class="kandil-desc">
+                    Üç ayların (Recep, Şaban, Ramazan) başlangıcı olan 
+                    Regaib Kandili, Ramazan'a hazırlık sürecinin başladığı gecedir.
+                </div>
+                <div class="kandil-section">
+                    <h4>📖 Önemi</h4>
+                    <p>
+                        "Regaib" kelimesi "çok değerli nimetler" anlamına gelir. 
+                        Bu gece, Allah'ın kullarına özel ihsanlar verdiği gecedir.
+                    </p>
+                </div>
+                <div class="kandil-section">
+                    <h4>🤲 Yapılacaklar</h4>
+                    <ul>
+                        <li>Nafile namaz kılmak</li>
+                        <li>Kuran okumak</li>
+                        <li>Tevbe ve istiğfar etmek</li>
+                        <li>Dua etmek</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="kandil-card">
+                <div class="kandil-header">
+                    <div class="kandil-icon">🌟</div>
+                    <div class="kandil-name">Miraç Kandili</div>
+                </div>
+                <div class="kandil-date">27 Recep</div>
+                <div class="kandil-desc">
+                    Hz. Muhammed (s.a.v)'in Mescid-i Haram'dan Mescid-i Aksa'ya, 
+                    oradan da Allah'ın huzuruna yükseldiği mübarek gecedir.
+                </div>
+                <div class="kandil-section">
+                    <h4>📖 Önemi</h4>
+                    <p>
+                        Miraç gecesi, beş vakit namazın farz kılındığı gecedir. 
+                        Bu gece Peygamberimiz cenneti, cehennemi ve diğer âlem gerçeklerini görmüştür.
+                    </p>
+                </div>
+                <div class="kandil-section">
+                    <h4>🤲 Yapılacaklar</h4>
+                    <ul>
+                        <li>Beş vakit namaza özen göstermek</li>
+                        <li>Miraç hadisini okumak</li>
+                        <li>Nafile ibadet yapmak</li>
+                        <li>Şükür namazı kılmak</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="kandil-card">
+                <div class="kandil-header">
+                    <div class="kandil-icon">🌙</div>
+                    <div class="kandil-name">Berat Kandili</div>
+                </div>
+                <div class="kandil-date">15 Şaban</div>
+                <div class="kandil-desc">
+                    "Beraat" kurtuluş demektir. Bu gece, Allah'ın kullarını 
+                    affettiği ve rızıkları yazdığı mübarek bir gecedir.
+                </div>
+                <div class="kandil-section">
+                    <h4>📖 Önemi</h4>
+                    <p>
+                        Bu gece, bir yıllık rızıklar, eceller ve diğer mukadderatın 
+                        yazıldığı gecedir. Mağfiret ve rahmet gecesidir.
+                    </p>
+                </div>
+                <div class="kandil-section">
+                    <h4>🤲 Yapılacaklar</h4>
+                    <ul>
+                        <li>Gece boyunca ibadet etmek</li>
+                        <li>Bol bol istiğfar etmek</li>
+                        <li>Mezarlık ziyareti yapmak</li>
+                        <li>Sadaka vermek</li>
+                        <li>Aile büyüklerini ziyaret etmek</li>
+                    </ul>
+                </div>
+                <div class="dua-box">
+                    <div class="dua-arabic">
+                        اَللّٰهُمَّ اغْفِرْ لَنَا وَارْحَمْنَا وَعَافِنَا وَاعْفُ عَنَّا
+                    </div>
+                    <div class="dua-translation">
+                        "Allah'ım! Bizi bağışla, bize merhamet et, bizi afiyette tut ve bizi affet."
+                    </div>
+                </div>
+            </div>
+
+            <div class="kandil-card">
+                <div class="kandil-header">
+                    <div class="kandil-icon">📿</div>
+                    <div class="kandil-name">Kadir Gecesi</div>
+                </div>
+                <div class="kandil-date">Ramazan'ın 27. gecesi (genellikle)</div>
+                <div class="kandil-desc">
+                    Kuran-ı Kerim'in indirilmeye başlandığı gece. Bin aydan hayırlı olan mübarek gecedir.
+                </div>
+                <div class="kandil-section">
+                    <h4>📖 Önemi</h4>
+                    <p>
+                        "Kadir gecesi bin aydan hayırlıdır" (Kadir Suresi, 3). 
+                        Bu gece yapılan ibadetler, bin ayda yapılan ibadetlerden daha değerlidir.
+                    </p>
+                </div>
+                <div class="kandil-section">
+                    <h4>🤲 Yapılacaklar</h4>
+                    <ul>
+                        <li>Gece boyunca namaz kılmak</li>
+                        <li>Kuran okumak</li>
+                        <li>Bol bol dua etmek</li>
+                        <li>Tesbih çekmek</li>
+                        <li>İstiğfar etmek</li>
+                    </ul>
+                </div>
+                <div class="dua-box">
+                    <div class="dua-arabic">
+                        اَللّٰهُمَّ اِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنّ۪ي
+                    </div>
+                    <div class="dua-translation">
+                        "Allah'ım! Sen affedicisin, affı seversin, beni de affet."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KANDILLER = [
+            { name: 'Mevlid Kandili', date: new Date('2025-09-04'), month: 3, day: 12 },
+            { name: 'Regaib Kandili', date: new Date('2025-01-03'), month: 7, day: 1 },
+            { name: 'Miraç Kandili', date: new Date('2025-01-27'), month: 7, day: 27 },
+            { name: 'Berat Kandili', date: new Date('2025-02-12'), month: 8, day: 15 },
+            { name: 'Kadir Gecesi', date: new Date('2025-03-25'), month: 9, day: 27 }
+        ];
+
+        function updateNextKandil() {
+            const now = new Date();
+            
+            // Find next kandil
+            let nextKandil = null;
+            for (let kandil of KANDILLER) {
+                if (kandil.date > now) {
+                    nextKandil = kandil;
+                    break;
+                }
+            }
+
+            if (!nextKandil) {
+                // All kandils passed, show first one of next year
+                nextKandil = KANDILLER[0];
+            }
+
+            // Update display
+            document.getElementById('nextKandilName').textContent = nextKandil.name;
+            document.getElementById('nextKandilDate').textContent = 
+                nextKandil.date.toLocaleDateString('tr-TR', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+
+            // Update countdown
+            const diff = nextKandil.date - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            document.getElementById('nextDays').textContent = days;
+            document.getElementById('nextHours').textContent = hours;
+        }
+
+        updateNextKandil();
+        setInterval(updateNextKandil, 60000); // Update every minute
+    </script>
+</body>
+</html>

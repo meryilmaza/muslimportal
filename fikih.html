@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fıkıh Rehberi - İbadet Bilgileri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .topic-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .topic-title { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+        .topic-desc { color: var(--text-secondary); line-height: 1.6; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.show { display: flex; }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-title { font-size: 2rem; color: var(--primary); margin: 1rem 0; }
+        .modal-section { margin: 1.5rem 0; }
+        .modal-section h4 { color: var(--primary); margin-bottom: 0.75rem; }
+        .modal-section p, .modal-section li { color: var(--text-secondary); line-height: 1.8; margin: 0.5rem 0; }
+        .modal-section ul { padding-left: 1.5rem; }
+
+        @media (max-width: 768px) {
+            .topics-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📖 Fıkıh Rehberi</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="topics-grid" id="topicsContainer"></div>
+    </div>
+
+    <div class="modal" id="topicModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const TOPICS = [
+            {
+                id: 1,
+                icon: '🕌',
+                title: 'Namaz',
+                desc: 'Namazın şartları, vakitleri ve hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Namaz Vakitleri',
+                            items: ['Sabah: Tan yerinin ağarmasından güneş doğana kadar', 'Öğle: Güneşin tepe noktasından geçmesinden itibaren', 'İkindi: Her şeyin gölgesi bir misli olunca', 'Akşam: Güneş battıktan sonra', 'Yatsı: Şafak kaybolunca']
+                        },
+                        {
+                            title: 'Namazın Farzları',
+                            items: ['Kıbleye yönelmek', 'Niyet etmek', 'İftitah tekbiri', 'Kıyam (ayakta durmak)', 'Kıraat (Fatiha okumak)', 'Rükû', 'Secde', 'Son oturuş']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 2,
+                icon: '🌙',
+                title: 'Oruç',
+                desc: 'Oruç tutmanın şartları ve hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Orucun Farzları',
+                            items: ['Niyet etmek', 'Yemek ve içmekten sakınmak', 'Cinsi ilişkiden sakınmak']
+                        },
+                        {
+                            title: 'Orucu Bozan Şeyler',
+                            items: ['Kasıtlı yemek ve içmek', 'Kusma', 'Cinsi ilişki', 'Kasıtlı hapların kullanımı']
+                        },
+                        {
+                            title: 'Oruç Çeşitleri',
+                            items: ['Ramazan orucu (Farz)', 'Kaza orucu', 'Kefaretler', 'Nafile oruçlar']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 3,
+                icon: '🤲',
+                title: 'Zekât',
+                desc: 'Zekât ve sadaka hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Zekâtın Farz Olma Şartları',
+                            items: ['Müslüman olmak', 'Hür olmak', 'Akıllı olmak', 'Nisap miktarına sahip olmak', 'Malın üzerinden bir yıl geçmesi']
+                        },
+                        {
+                            title: 'Zekât Oranları',
+                            items: ['Altın ve gümüş: %2.5', 'Ticaret malı: %2.5', 'Tarım ürünleri: %10 veya %5', 'Hayvan: Sayıya göre değişir']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 4,
+                icon: '🕋',
+                title: 'Hac',
+                desc: 'Hac ve umre ibadeti',
+                content: {
+                    sections: [
+                        {
+                            title: 'Haccın Farzları',
+                            items: ['İhram', 'Arafat vakfesi', 'Tavaf']
+                        },
+                        {
+                            title: 'Haccın Vacipleri',
+                            items: ['Safa ile Merve arasında sa\'y', 'Müzdelife\'de vakfe', 'Cemreleri taşlama', 'Erkeklerin traş olması']
+                        },
+                        {
+                            title: 'Umre',
+                            items: ['İhram', 'Tavaf', 'Sa\'y', 'Traş veya kısaltma']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 5,
+                icon: '💧',
+                title: 'Abdest ve Gusül',
+                desc: 'Temizlik ve taharet hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Abdestin Farzları',
+                            items: ['Yüzü yıkamak', 'Kolları dirseklere kadar yıkamak', 'Başı mesh etmek', 'Ayakları topuklara kadar yıkamak']
+                        },
+                        {
+                            title: 'Abdesti Bozan Şeyler',
+                            items: ['Tuvalet ihtiyacı', 'Gaz çıkması', 'Uyumak', 'Bayılmak', 'Kanama']
+                        },
+                        {
+                            title: 'Gusül Gereken Haller',
+                            items: ['Cünüplük', 'Hayız ve nifas', 'Ölü yıkama']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 6,
+                icon: '🤝',
+                title: 'Muamelat',
+                desc: 'Alışveriş ve ticaret hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Helal Kazanç',
+                            items: ['Dürüst ticaret', 'Emek karşılığı kazanç', 'Meşru üretim', 'Helal yollardan kira geliri']
+                        },
+                        {
+                            title: 'Haram Kazanç',
+                            items: ['Faiz', 'Kumar', 'Hırsızlık', 'Rüşvet', 'Aldatma ve hile', 'Haram madde ticareti']
+                        },
+                        {
+                            title: 'Alışveriş Adabı',
+                            items: ['Dürüst olmak', 'Ayıpları bildirmek', 'Adil fiyat', 'Tartıda hile yapmamak']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 7,
+                icon: '💍',
+                title: 'Nikâh',
+                desc: 'Evlilik hükümleri',
+                content: {
+                    sections: [
+                        {
+                            title: 'Nikâhın Şartları',
+                            items: ['İki tarafın rızası', 'Mehir', 'Şahitler', 'Veli (kız tarafı için)', 'İcap ve kabul']
+                        },
+                        {
+                            title: 'Evlilik Hakları',
+                            items: ['Kocanın hakları: İtaat, sadakat', 'Kadının hakları: Nafaka, mehir, iyi muamele', 'Ortak haklar: Sadakat, sevgi, hürmet']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 8,
+                icon: '📿',
+                title: 'Zikir ve Dua',
+                desc: 'Zikir ve dua adabı',
+                content: {
+                    sections: [
+                        {
+                            title: 'Zikir Çeşitleri',
+                            items: ['Tesbih (Subhanallah)', 'Tahmid (Alhamdulillah)', 'Tekbir (Allahu Ekber)', 'Tehlil (La ilahe illallah)']
+                        },
+                        {
+                            title: 'Dua Adabı',
+                            items: ['Abdestli olmak', 'Kıbleye yönelmek', 'Elleri kaldırmak', 'Allah\'ın isim ve sıfatlarıyla başlamak', 'Peygamberimize salat getirmek']
+                        },
+                        {
+                            title: 'Duanın Kabul Olma Zamanları',
+                            items: ['Ezan ile kamet arası', 'Secde hali', 'Gecenin son üçte biri', 'Cuma günü', 'Yağmur yağarken']
+                        }
+                    ]
+                }
+            }
+        ];
+
+        window.addEventListener('DOMContentLoaded', displayTopics);
+
+        function displayTopics() {
+            document.getElementById('topicsContainer').innerHTML = TOPICS.map(topic => `
+                <div class="topic-card" onclick="showTopic(${topic.id})">
+                    <div class="topic-icon">${topic.icon}</div>
+                    <div class="topic-title">${topic.title}</div>
+                    <div class="topic-desc">${topic.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function showTopic(id) {
+            const topic = TOPICS.find(t => t.id === id);
+            const modal = document.getElementById('topicModal');
+            
+            let html = `<h2 class="modal-title">${topic.icon} ${topic.title}</h2>`;
+            
+            topic.content.sections.forEach(section => {
+                html += `
+                    <div class="modal-section">
+                        <h4>${section.title}</h4>
+                        <ul>
+                            ${section.items.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('modalBody').innerHTML = html;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('topicModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

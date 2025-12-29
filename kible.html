@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kıble Pusulası - Kıble Yönü Bulucu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --gold: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .compass-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .kaaba-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .compass-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+
+        .compass-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .compass-inner {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+
+        .compass-directions {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .direction {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .direction.north { top: 10px; left: 50%; transform: translateX(-50%); color: #ef4444; }
+        .direction.east { right: 10px; top: 50%; transform: translateY(-50%); }
+        .direction.south { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        .direction.west { left: 10px; top: 50%; transform: translateY(-50%); }
+
+        .qibla-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 120px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            transform-origin: bottom center;
+            transform: translate(-50%, -100%);
+            transition: transform 0.5s ease;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .qibla-arrow::before {
+            content: '🕋';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .qibla-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .degree-display {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 2rem 0 0.5rem;
+        }
+
+        .direction-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .location-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .location-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 12px;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .status-message.loading {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+        }
+
+        .instructions h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .instructions li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .compass-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .compass-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .compass-inner {
+                width: 230px;
+                height: 230px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .degree-display {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            ← Ana Sayfa
+        </a>
+        <h1>🧭 Kıble Pusulası</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="compass-card">
+            <div class="kaaba-icon">🕋</div>
+            <h2 style="color: var(--text-primary); margin-bottom: 0.5rem;">Kıble Yönü</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Konumunuzu paylaşarak Kıble yönünü bulun</p>
+
+            <div id="statusMessage"></div>
+
+            <div class="compass-container">
+                <div class="compass-outer">
+                    <div class="compass-inner" id="compass">
+                        <div class="compass-directions">
+                            <div class="direction north">N</div>
+                            <div class="direction east">E</div>
+                            <div class="direction south">S</div>
+                            <div class="direction west">W</div>
+                        </div>
+                        <div class="qibla-arrow" id="qiblaArrow"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="degree-display" id="degreeDisplay">---°</div>
+            <div class="direction-text" id="directionText">Konum bekleniyor</div>
+
+            <button class="location-btn" id="locationBtn" onclick="getLocation()">
+                📍 Konumumu Al
+            </button>
+
+            <div class="instructions">
+                <h3>📱 Kullanım Talimatları</h3>
+                <ul>
+                    <li>Konum iznini verin</li>
+                    <li>Telefonunuzu yatay tutun</li>
+                    <li>Pusula kalibre olmasını bekleyin</li>
+                    <li>Kabe işaretini takip edin</li>
+                    <li>Cihazınızı 8 şeklinde hareket ettirin (kalibrasyon için)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-primary);">
+                📊 Konum Bilgileri
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-label">Konumunuz</div>
+                    <div class="info-value" id="userLocation">---</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🕋</div>
+                    <div class="info-label">Kabe (Mekke)</div>
+                    <div class="info-value">21.4225°N, 39.8262°E</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">📏</div>
+                    <div class="info-label">Mesafe</div>
+                    <div class="info-value" id="distance">---</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🧭</div>
+                    <div class="info-label">Kıble Açısı</div>
+                    <div class="info-value" id="qiblaAngle">---</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KAABA_LAT = 21.4225;
+        const KAABA_LNG = 39.8262;
+
+        let userLat = null;
+        let userLng = null;
+        let qiblaDirection = 0;
+        let currentHeading = 0;
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="status-message ${type}">${message}</div>`;
+        }
+
+        function getLocation() {
+            if (!navigator.geolocation) {
+                showStatus('❌ Tarayıcınız konum özelliğini desteklemiyor', 'error');
+                return;
+            }
+
+            showStatus('📍 Konumunuz alınıyor...', 'loading');
+            document.getElementById('locationBtn').disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLat = position.coords.latitude;
+                    userLng = position.coords.longitude;
+                    
+                    calculateQibla();
+                    startCompass();
+                    showStatus('✅ Konum başarıyla alındı!', 'success');
+                    
+                    setTimeout(() => {
+                        document.getElementById('statusMessage').innerHTML = '';
+                    }, 3000);
+                },
+                error => {
+                    let message = '❌ Konum alınamadı. ';
+                    if (error.code === 1) {
+                        message += 'Konum izni verilmedi.';
+                    } else if (error.code === 2) {
+                        message += 'Konum bilgisi kullanılamıyor.';
+                    } else {
+                        message += 'Zaman aşımı.';
+                    }
+                    showStatus(message, 'error');
+                    document.getElementById('locationBtn').disabled = false;
+                }
+            );
+        }
+
+        function calculateQibla() {
+            // Calculate distance
+            const R = 6371; // Earth radius in km
+            const dLat = toRad(KAABA_LAT - userLat);
+            const dLon = toRad(KAABA_LNG - userLng);
+            
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                     Math.cos(toRad(userLat)) * Math.cos(toRad(KAABA_LAT)) *
+                     Math.sin(dLon/2) * Math.sin(dLon/2);
+            
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c;
+
+            // Calculate bearing (Qibla direction)
+            const y = Math.sin(toRad(KAABA_LNG - userLng)) * Math.cos(toRad(KAABA_LAT));
+            const x = Math.cos(toRad(userLat)) * Math.sin(toRad(KAABA_LAT)) -
+                     Math.sin(toRad(userLat)) * Math.cos(toRad(KAABA_LAT)) *
+                     Math.cos(toRad(KAABA_LNG - userLng));
+            
+            let bearing = toDeg(Math.atan2(y, x));
+            qiblaDirection = (bearing + 360) % 360;
+
+            // Update display
+            document.getElementById('userLocation').textContent = 
+                `${userLat.toFixed(4)}°, ${userLng.toFixed(4)}°`;
+            document.getElementById('distance').textContent = 
+                `${distance.toFixed(0)} km`;
+            document.getElementById('qiblaAngle').textContent = 
+                `${qiblaDirection.toFixed(1)}°`;
+        }
+
+        function startCompass() {
+            if (!window.DeviceOrientationEvent) {
+                showStatus('❌ Cihazınız pusula özelliğini desteklemiyor', 'error');
+                return;
+            }
+
+            window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+            window.addEventListener('deviceorientation', handleOrientation, true);
+        }
+
+        function handleOrientation(event) {
+            let heading = event.webkitCompassHeading || event.alpha;
+            
+            if (heading !== null && heading !== undefined) {
+                // Normalize heading
+                if (event.webkitCompassHeading) {
+                    currentHeading = heading;
+                } else {
+                    currentHeading = 360 - heading;
+                }
+
+                updateCompass();
+            }
+        }
+
+        function updateCompass() {
+            // Rotate compass to show current heading
+            const compass = document.getElementById('compass');
+            compass.style.transform = `rotate(${-currentHeading}deg)`;
+
+            // Calculate arrow direction relative to north
+            const arrowDirection = qiblaDirection - currentHeading;
+            const arrow = document.getElementById('qiblaArrow');
+            arrow.style.transform = `translate(-50%, -100%) rotate(${arrowDirection}deg)`;
+
+            // Update degree display
+            const relativeDegree = (qiblaDirection - currentHeading + 360) % 360;
+            document.getElementById('degreeDisplay').textContent = 
+                `${relativeDegree.toFixed(0)}°`;
+
+            // Update direction text
+            let directionText = '';
+            if (relativeDegree < 22.5 || relativeDegree >= 337.5) {
+                directionText = 'Doğrudan İleriye 🕋';
+            } else if (relativeDegree >= 22.5 && relativeDegree < 67.5) {
+                directionText = 'Sağ Öne Doğru ↗️';
+            } else if (relativeDegree >= 67.5 && relativeDegree < 112.5) {
+                directionText = 'Sağa Doğru →';
+            } else if (relativeDegree >= 112.5 && relativeDegree < 157.5) {
+                directionText = 'Sağ Geriye Doğru ↘️';
+            } else if (relativeDegree >= 157.5 && relativeDegree < 202.5) {
+                directionText = 'Arkaya Doğru ⬇️';
+            } else if (relativeDegree >= 202.5 && relativeDegree < 247.5) {
+                directionText = 'Sol Geriye Doğru ↙️';
+            } else if (relativeDegree >= 247.5 && relativeDegree < 292.5) {
+                directionText = 'Sola Doğru ←';
+            } else {
+                directionText = 'Sol Öne Doğru ↖️';
+            }
+
+            document.getElementById('directionText').textContent = directionText;
+        }
+
+        function toRad(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        function toDeg(radians) {
+            return radians * 180 / Math.PI;
+        }
+
+        // Auto-request location on load (optional)
+        // window.addEventListener('DOMContentLoaded', getLocation);
+    </script>
+</body>
+</html>

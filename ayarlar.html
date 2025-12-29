@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayarlar & Kişiselleştirme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+        .settings-card { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .settings-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 0.75rem; background: #f8fafc; border-radius: 10px; }
+        .setting-label { font-weight: 600; color: var(--text-primary); }
+        .setting-desc { font-size: 0.875rem; color: var(--text-secondary); }
+        select { padding: 0.5rem 1rem; border: 2px solid #e2e8f0; border-radius: 8px; font-family: inherit; background: white; cursor: pointer; }
+        .theme-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .theme-btn { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; background: white; }
+        .theme-btn:hover { border-color: var(--primary); }
+        .theme-btn.active { border-color: var(--primary); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); }
+        .theme-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .theme-name { font-weight: 600; color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>⚙️ Ayarlar</h1>
+        <div style="width: 120px;"></div>
+    </div>
+    <div class="container">
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>🎨</span>
+                <span>Tema Seçimi</span>
+            </div>
+            <div class="theme-options">
+                <div class="theme-btn active" onclick="setTheme(this, 'light')">
+                    <div class="theme-icon">☀️</div>
+                    <div class="theme-name">Açık</div>
+                </div>
+                <div class="theme-btn" onclick="setTheme(this, 'dark')">
+                    <div class="theme-icon">🌙</div>
+                    <div class="theme-name">Koyu</div>
+                </div>
+                <div class="theme-btn" onclick="setTheme(this, 'auto')">
+                    <div class="theme-icon">🔄</div>
+                    <div class="theme-name">Otomatik</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>🔤</span>
+                <span>Yazı Boyutu</span>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Kuran Metni</div>
+                    <div class="setting-desc">Kuran okurken yazı boyutu</div>
+                </div>
+                <select>
+                    <option>Küçük</option>
+                    <option selected>Orta</option>
+                    <option>Büyük</option>
+                    <option>Çok Büyük</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Arayüz Metni</div>
+                    <div class="setting-desc">Genel yazı boyutu</div>
+                </div>
+                <select>
+                    <option>Küçük</option>
+                    <option selected>Orta</option>
+                    <option>Büyük</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>🌍</span>
+                <span>Dil & Bölge</span>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Dil</div>
+                    <div class="setting-desc">Arayüz dili</div>
+                </div>
+                <select>
+                    <option selected>Türkçe</option>
+                    <option>English</option>
+                    <option>العربية</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Meal Dili</div>
+                    <div class="setting-desc">Kuran meali</div>
+                </div>
+                <select>
+                    <option selected>Elmalılı Hamdi Yazır</option>
+                    <option>Diyanet İşleri</option>
+                    <option>Süleyman Ateş</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>🎵</span>
+                <span>Ses Ayarları</span>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Ezan Sesi</div>
+                    <div class="setting-desc">Namaz vakti için</div>
+                </div>
+                <select>
+                    <option selected>Varsayılan</option>
+                    <option>Mekke</option>
+                    <option>Medine</option>
+                    <option>İstanbul</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Bildirim Sesi</div>
+                    <div class="setting-desc">Hatırlatıcılar için</div>
+                </div>
+                <select>
+                    <option selected>Açık</option>
+                    <option>Sessiz</option>
+                    <option>Sadece Titreşim</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>📍</span>
+                <span>Konum</span>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Şehir</div>
+                    <div class="setting-desc">Namaz vakitleri için</div>
+                </div>
+                <select>
+                    <option>İstanbul</option>
+                    <option selected>Ankara</option>
+                    <option>İzmir</option>
+                    <option>Antalya</option>
+                    <option>Bursa</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title">
+                <span>💾</span>
+                <span>Veri & Gizlilik</span>
+            </div>
+            <button style="width: 100%; padding: 1rem; background: #ef4444; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-bottom: 0.75rem;" onclick="if(confirm('Tüm veriler silinecek!')) alert('Veriler silindi')">
+                🗑️ Tüm Verileri Sil
+            </button>
+            <button style="width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;" onclick="alert('Veriler dışa aktarıldı')">
+                📥 Verileri Dışa Aktar
+            </button>
+        </div>
+    </div>
+    <script>
+        function setTheme(btn, theme) {
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            localStorage.setItem('theme', theme);
+        }
+    </script>
+</body>
+</html>

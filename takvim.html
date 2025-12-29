@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hicri Takvim - İslami Takvim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .date-card {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .date-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .hijri-date { font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+        .gregorian-date { font-size: 1.5rem; color: var(--text-secondary); }
+
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .month-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .month-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .month-card.current {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .month-number { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .month-name { font-size: 1.25rem; font-weight: 700; }
+        .month-arabic { font-family: 'Scheherazade New', serif; font-size: 1.5rem; margin-top: 0.5rem; }
+
+        .events-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .events-section h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .event-card {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .event-date { font-size: 1rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+        .event-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .event-desc { color: var(--text-secondary); line-height: 1.6; }
+
+        @media (max-width: 768px) {
+            .months-grid { grid-template-columns: repeat(2, 1fr); }
+            .date-card, .events-section { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📅 Hicri Takvim</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="date-card">
+            <div class="date-icon">🌙</div>
+            <div class="hijri-date" id="hijriDate">1 Muharrem 1446</div>
+            <div class="gregorian-date" id="gregorianDate">8 Temmuz 2024</div>
+        </div>
+
+        <div class="months-grid" id="monthsGrid"></div>
+
+        <div class="events-section">
+            <h2>📌 Önemli Günler</h2>
+            <div id="eventsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const HIJRI_MONTHS = [
+            { num: 1, name: 'Muharrem', arabic: 'مُحَرَّم' },
+            { num: 2, name: 'Safer', arabic: 'صَفَر' },
+            { num: 3, name: 'Rebiülevvel', arabic: 'رَبِيع ٱلْأَوَّل' },
+            { num: 4, name: 'Rebiülahir', arabic: 'رَبِيع ٱلثَّانِي' },
+            { num: 5, name: 'Cemaziyelevvel', arabic: 'جُمَادَىٰ ٱلْأُولَىٰ' },
+            { num: 6, name: 'Cemaziyelahir', arabic: 'جُمَادَىٰ ٱلثَّانِيَة' },
+            { num: 7, name: 'Recep', arabic: 'رَجَب' },
+            { num: 8, name: 'Şaban', arabic: 'شَعْبَان' },
+            { num: 9, name: 'Ramazan', arabic: 'رَمَضَان' },
+            { num: 10, name: 'Şevval', arabic: 'شَوَّال' },
+            { num: 11, name: 'Zilkade', arabic: 'ذُو ٱلْقَعْدَة' },
+            { num: 12, name: 'Zilhicce', arabic: 'ذُو ٱلْحِجَّة' }
+        ];
+
+        const IMPORTANT_DAYS = [
+            { month: 1, day: 1, title: 'Hicri Yılbaşı', desc: 'İslam takviminin ilk günü' },
+            { month: 1, day: 10, title: 'Aşure Günü', desc: 'Hz. Nuh\'un gemisinin karaya oturduğu, Hz. Musa\'nın Firavun\'dan kurtulduğu gün' },
+            { month: 3, day: 12, title: 'Mevlid Kandili', desc: 'Hz. Muhammed\'in (s.a.v) doğum günü' },
+            { month: 7, day: 1, title: 'Regaib Kandili', desc: 'Üç ayların ilk kandili' },
+            { month: 8, day: 15, title: 'Berat Kandili', desc: 'Bağışlanma ve bereket gecesi' },
+            { month: 9, day: 1, title: 'Ramazan Başlangıcı', desc: 'Mübarek Ramazan ayının ilk günü' },
+            { month: 9, day: 27, title: 'Kadir Gecesi', desc: 'Kuran\'ın indirilmeye başlandığı gece' },
+            { month: 10, day: 1, title: 'Ramazan Bayramı', desc: 'Ramazan Bayramı 1. Gün' },
+            { month: 12, day: 9, title: 'Arefe Günü', desc: 'Hacıların Arafat\'ta vakfe yaptığı gün' },
+            { month: 12, day: 10, title: 'Kurban Bayramı', desc: 'Kurban Bayramı 1. Gün' }
+        ];
+
+        window.addEventListener('DOMContentLoaded', function() {
+            updateDates();
+            displayMonths();
+            displayEvents();
+        });
+
+        function updateDates() {
+            const today = new Date();
+            
+            // Approximate Hijri date calculation
+            const gregorianYear = today.getFullYear();
+            const gregorianMonth = today.getMonth() + 1;
+            const gregorianDay = today.getDate();
+            
+            // Simple approximation (not astronomically accurate)
+            const hijriYear = Math.floor((gregorianYear - 622) * 1.030684) + 1;
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+            const hijriMonth = Math.floor((dayOfYear / 30) % 12) + 1;
+            const hijriDay = Math.floor(dayOfYear % 30) + 1;
+
+            const monthName = HIJRI_MONTHS[hijriMonth - 1].name;
+            
+            document.getElementById('hijriDate').textContent = 
+                `${hijriDay} ${monthName} ${hijriYear}`;
+            
+            document.getElementById('gregorianDate').textContent = 
+                today.toLocaleDateString('tr-TR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+        }
+
+        function displayMonths() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+            const currentMonth = Math.floor((dayOfYear / 30) % 12) + 1;
+
+            document.getElementById('monthsGrid').innerHTML = HIJRI_MONTHS.map(month => `
+                <div class="month-card ${month.num === currentMonth ? 'current' : ''}">
+                    <div class="month-number">${month.num}</div>
+                    <div class="month-name">${month.name}</div>
+                    <div class="month-arabic">${month.arabic}</div>
+                </div>
+            `).join('');
+        }
+
+        function displayEvents() {
+            document.getElementById('eventsContainer').innerHTML = IMPORTANT_DAYS.map(event => `
+                <div class="event-card">
+                    <div class="event-date">${event.day} ${HIJRI_MONTHS[event.month - 1].name}</div>
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-desc">${event.desc}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
