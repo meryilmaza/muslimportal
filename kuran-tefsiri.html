@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuran Tefsiri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        .search-card { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .search-input { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-family: inherit; }
+        .search-input:focus { outline: none; border-color: var(--primary); }
+        
+        .surah-select { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; margin-top: 1rem; }
+        
+        .tafsir-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        .ayah-number { display: inline-block; background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 6px; font-weight: 700; margin-bottom: 1rem; }
+        .ayah-arabic { font-family: 'Scheherazade New', serif; font-size: 2rem; text-align: right; direction: rtl; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 2.5; padding: 1.5rem; background: #f8fafc; border-radius: 12px; }
+        .ayah-translation { color: var(--text-secondary); font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 10px; }
+        .tafsir-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+        .tafsir-content { color: var(--text-secondary); line-height: 2; }
+        .tafsir-content p { margin-bottom: 1rem; }
+        
+        .word-analysis { background: #f0fdf4; padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; }
+        .word-analysis-title { font-weight: 700; color: var(--primary); margin-bottom: 1rem; }
+        .word-item { margin-bottom: 0.75rem; }
+        .word-arabic { font-family: 'Scheherazade New', serif; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+        .word-meaning { color: var(--text-secondary); margin-left: 1rem; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .ayah-arabic { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📖 Kuran Tefsiri</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="search-card">
+            <input type="text" class="search-input" placeholder="🔍 Ayet veya konu ara..." id="searchInput">
+            <select class="surah-select" id="surahSelect" onchange="selectSurah()">
+                <option value="">Sure Seç...</option>
+                <option value="1">1. Fatiha</option>
+                <option value="2">2. Bakara</option>
+                <option value="112">112. İhlas</option>
+                <option value="113">113. Felak</option>
+                <option value="114">114. Nas</option>
+            </select>
+        </div>
+
+        <div id="tafsirContainer">
+            <div class="tafsir-card">
+                <div class="ayah-number">Fatiha Suresi - Ayet 1</div>
+                <div class="ayah-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ</div>
+                <div class="ayah-translation">
+                    <strong>Meal:</strong> Rahman ve Rahim olan Allah'ın adıyla.
+                </div>
+                
+                <div class="tafsir-title">📚 Tefsir (Elmalılı Hamdi Yazır)</div>
+                <div class="tafsir-content">
+                    <p>
+                        <strong>Besmele,</strong> Müslümanların her hayırlı işe başlarken söyledikleri bir ibaret olup, 
+                        "Allah'ın adıyla" demektir. Bu, işin Allah rızası için yapıldığını ve O'ndan yardım istendiğini gösterir.
+                    </p>
+                    <p>
+                        <strong>Rahman:</strong> Sonsuz merhamet sahibi demektir. Allah'ın rahmeti her şeyi kuşatmıştır. 
+                        Bu isim, Allah'ın tüm yaratıklarına gösterdiği genel rahmetini ifade eder.
+                    </p>
+                    <p>
+                        <strong>Rahim:</strong> Çok merhametli demektir. Bu isim ise özellikle müminlere özel olan rahmeti ifade eder. 
+                        Rahman dünya nimetlerini, Rahim ise ahiret nimetlerini verir.
+                    </p>
+                    <p>
+                        Besmele, Kuran-ı Kerim'in 113 suresinin başında yer alır. Her surenin başında tekrarlanması, 
+                        müminlere her işe Allah'ın adıyla başlamayı hatırlatır.
+                    </p>
+                </div>
+
+                <div class="word-analysis">
+                    <div class="word-analysis-title">🔍 Kelime Analizleri</div>
+                    <div class="word-item">
+                        <span class="word-arabic">بِسْمِ</span>
+                        <span class="word-meaning">→ İsmiyle, adıyla (Jar mecrur)</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">اللّٰهِ</span>
+                        <span class="word-meaning">→ Allah (İsm-i celal)</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">الرَّحْمٰنِ</span>
+                        <span class="word-meaning">→ Rahman (Sonsuz merhametli)</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">الرَّحِيمِ</span>
+                        <span class="word-meaning">→ Rahim (Çok merhametli)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tafsir-card">
+                <div class="ayah-number">İhlas Suresi - Ayet 1-4</div>
+                <div class="ayah-arabic">
+                    قُلْ هُوَ اللّٰهُ أَحَدٌ ۝ اَللّٰهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ
+                </div>
+                <div class="ayah-translation">
+                    <strong>Meal:</strong> De ki: O, Allah'tır, bir tektir. Allah Samed'dir (her şey O'na muhtaçtır, O hiçbir şeye muhtaç değildir). 
+                    O, doğurmamış ve doğurulmamıştır. Hiçbir şey O'na denk ve benzer değildir.
+                </div>
+                
+                <div class="tafsir-title">📚 Tefsir</div>
+                <div class="tafsir-content">
+                    <p>
+                        <strong>İhlas Suresi,</strong> tevhid (Allah'ın birliğini) anlatan en özet sure olup, Kuran'ın üçte birine denktir. 
+                        Peygamber Efendimiz (s.a.v.) bu sureyi çok sık okumuştur.
+                    </p>
+                    <p>
+                        <strong>"Kul hüvallahü ehad":</strong> "De ki O, Allah bir tektir" anlamına gelir. 
+                        Burada Allah'ın eşsiz birliği vurgulanır. O'nun ne ortağı, ne benzeri, ne de rakibi vardır.
+                    </p>
+                    <p>
+                        <strong>"Allahüs-Samed":</strong> Samed, herkesin kendisine muhtaç olduğu, kendisi hiçbir şeye muhtaç olmayan demektir. 
+                        Tüm varlıklar Allah'a muhtaçken, Allah kimseye muhtaç değildir.
+                    </p>
+                    <p>
+                        <strong>"Lem yelid ve lem yüled":</strong> Allah ne doğurmuştur ne de doğurulmuştur. 
+                        Bu ayetle putperestlerin ve Hristiyanların yanlış inançları reddedilir.
+                    </p>
+                    <p>
+                        <strong>"Ve lem yekün lehu küfüven ehad":</strong> Hiçbir şey Allah'a denk değildir. 
+                        Ne akıl O'nu tam kavrayabilir, ne de hayal O'nu tasavvur edebilir.
+                    </p>
+                </div>
+
+                <div class="word-analysis">
+                    <div class="word-analysis-title">🔍 Kelime Analizleri</div>
+                    <div class="word-item">
+                        <span class="word-arabic">قُلْ</span>
+                        <span class="word-meaning">→ De (Emir fiil)</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">أَحَدٌ</span>
+                        <span class="word-meaning">→ Bir, tek, eşsiz</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">الصَّمَدُ</span>
+                        <span class="word-meaning">→ Her şeyin kendisine muhtaç olduğu</span>
+                    </div>
+                    <div class="word-item">
+                        <span class="word-arabic">كُفُوًا</span>
+                        <span class="word-meaning">→ Denk, eş, benzer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectSurah() {
+            const surah = document.getElementById('surahSelect').value;
+            if (surah) {
+                alert(`${surah}. Sure tefsiri yükleniyor... (API entegrasyonu ile genişletilebilir)`);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const search = e.target.value.toLowerCase();
+            // Arama fonksiyonu - API ile genişletilebilir
+            if (search.length > 2) {
+                console.log('Aranıyor:', search);
+            }
+        });
+    </script>
+</body>
+</html>

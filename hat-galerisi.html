@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İslami Hat Galerisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+        .art-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); transition: all 0.3s; cursor: pointer; }
+        .art-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); }
+        .art-image { width: 100%; height: 300px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: center; font-family: 'Scheherazade New', serif; font-size: 3rem; color: var(--text-primary); padding: 2rem; text-align: center; line-height: 1.8; }
+        .art-info { padding: 1.5rem; }
+        .art-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .art-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+        .art-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .art-tag { padding: 0.25rem 0.75rem; background: #f0fdf4; color: var(--primary); border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .download-btn { width: 100%; margin-top: 1rem; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🎨 İslami Hat Galerisi</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="gallery-grid">
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                    بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Besmele-i Şerife</div>
+                    <div class="art-desc">Rahman ve Rahim olan Allah'ın adıyla. İslam'ın en çok yazılan kelimelerinden biri.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Celi Sülüs</span>
+                        <span class="art-tag">Klasik</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                    اَللّٰهُ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Lafzatullah</div>
+                    <div class="art-desc">Allah'ın ismi. En sade ve en güzel formda yazılmış lafza-i celal.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Sülüs</span>
+                        <span class="art-tag">Modern</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);">
+                    لَا إِلٰهَ إِلَّا اللّٰهُ<br>مُحَمَّدٌ رَسُولُ اللّٰهِ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Kelime-i Tevhid ve Şehadet</div>
+                    <div class="art-desc">İslam'ın temel inancını ifade eden kelimeler. Allah'tan başka ilah yoktur, Muhammed Allah'ın elçisidir.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Nesih</span>
+                        <span class="art-tag">Geleneksel</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%);">
+                    اَلْحَمْدُ لِلّٰهِ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Elhamdülillah</div>
+                    <div class="art-desc">Hamd Allah'a mahsustur. Şükür ve minnettarlığın ifadesi.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Sülüs</span>
+                        <span class="art-tag">Zarif</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">
+                    مَاشَاءَ اللّٰهُ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Maşallah</div>
+                    <div class="art-desc">Allah'ın dilediği oldu. Hayranlık ve hayırlı dilekte bulunma ifadesi.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Celi</span>
+                        <span class="art-tag">Dekoratif</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+
+            <div class="art-card">
+                <div class="art-image" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+                    اَللّٰهُمَّ صَلِّ عَلٰى سَيِّدِنَا مُحَمَّدٍ
+                </div>
+                <div class="art-info">
+                    <div class="art-title">Salavat-ı Şerife</div>
+                    <div class="art-desc">Allah'ım Efendimiz Muhammed'e salat eyle. Peygamber Efendimize saygı ve salavat getirme.</div>
+                    <div class="art-meta">
+                        <span class="art-tag">Nesih</span>
+                        <span class="art-tag">Kutsal</span>
+                    </div>
+                    <button class="download-btn" onclick="alert('İndirme özelliği aktif edilecek')">⬇️ İndir (HD)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

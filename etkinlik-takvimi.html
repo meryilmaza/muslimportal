@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkinlik Takvimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        .filters { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); display: flex; gap: 1rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.75rem 1.5rem; border: 2px solid #e2e8f0; background: white; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+        .event-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s; }
+        .event-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+        
+        .event-header { padding: 1.5rem; background: linear-gradient(135deg, var(--primary) 0%, #059669 100%); color: white; }
+        .event-date { font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .event-title { font-size: 1.25rem; font-weight: 700; }
+        
+        .event-body { padding: 1.5rem; }
+        .event-type { display: inline-block; padding: 0.25rem 0.75rem; background: #f0fdf4; color: var(--primary); border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; }
+        .event-desc { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+        .event-location { display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        
+        .event-footer { padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .attendees { font-size: 0.875rem; color: var(--text-secondary); }
+        .join-btn { padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        @media (max-width: 768px) {
+            .events-grid { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📅 Etkinlik Takvimi</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterEvents('all')">Tümü</button>
+            <button class="filter-btn" onclick="filterEvents('cuma')">🕌 Cuma</button>
+            <button class="filter-btn" onclick="filterEvents('sohbet')">💬 Sohbet</button>
+            <button class="filter-btn" onclick="filterEvents('seminer')">🎓 Seminer</button>
+            <button class="filter-btn" onclick="filterEvents('etkinlik')">🎉 Etkinlik</button>
+        </div>
+
+        <div class="events-grid" id="eventsContainer"></div>
+    </div>
+
+    <script>
+        const EVENTS = [
+            {
+                type: 'cuma',
+                title: 'Cuma Hutbesi: İnfak ve Sadaka',
+                date: '3 Ocak 2025, Cuma',
+                time: '13:00',
+                location: 'Merkez Camii',
+                desc: 'Bu haftanın konusu Allah yolunda infak etmek ve sadakanın önemi.',
+                attendees: 250
+            },
+            {
+                type: 'sohbet',
+                title: 'İslam\'da Aile Değerleri Sohbeti',
+                date: '5 Ocak 2025, Pazar',
+                time: '14:30',
+                location: 'Nur Camii Toplantı Salonu',
+                desc: 'Hoca Efendi ile aile içi iletişim, çocuk terbiyesi ve günümüz zorluklarına İslami yaklaşım.',
+                attendees: 80
+            },
+            {
+                type: 'seminer',
+                title: 'Kuran Tilâveti ve Tecvid Semineri',
+                date: '7 Ocak 2025, Salı',
+                time: '19:00',
+                location: 'İslami Eğitim Merkezi',
+                desc: 'Hafız Hocamız eşliğinde tecvid kuralları ve doğru telaffuz pratiği. Tüm seviyeler katılabilir.',
+                attendees: 45
+            },
+            {
+                type: 'cuma',
+                title: 'Cuma Hutbesi: Sabır ve Tevekkül',
+                date: '10 Ocak 2025, Cuma',
+                time: '13:00',
+                location: 'Merkez Camii',
+                desc: 'Zor zamanlarda sabır göstermenin önemi ve Allah\'a tevekkül etmek.',
+                attendees: 250
+            },
+            {
+                type: 'etkinlik',
+                title: 'Çocuklar için Siyer Etkinliği',
+                date: '12 Ocak 2025, Pazar',
+                time: '10:00',
+                location: 'Gençlik Merkezi',
+                desc: 'Çocuklarımıza Peygamber Efendimizin hayatını öğretme etkinliği. Yaş grubu: 7-12.',
+                attendees: 65
+            },
+            {
+                type: 'sohbet',
+                title: 'Günümüzde Müslümanlık Sohbeti',
+                date: '14 Ocak 2025, Salı',
+                time: '20:00',
+                location: 'Online (Zoom)',
+                desc: 'Modern dünyada İslami değerleri yaşama, iş hayatı ve sosyal medya kullanımı.',
+                attendees: 120
+            },
+            {
+                type: 'seminer',
+                title: 'İslam Tarihi: Hulefa-i Raşidin Dönemi',
+                date: '16 Ocak 2025, Perşembe',
+                time: '19:30',
+                location: 'Kültür Merkezi',
+                desc: 'Dört Halife döneminin detaylı incelemesi. Tarihçi Dr. Ahmet Bey sunumuyla.',
+                attendees: 90
+            },
+            {
+                type: 'cuma',
+                title: 'Cuma Hutbesi: İhsan Ahlakı',
+                date: '17 Ocak 2025, Cuma',
+                time: '13:00',
+                location: 'Merkez Camii',
+                desc: 'İhsan kavramı ve günlük hayatta güzel ahlak sergilemek.',
+                attendees: 250
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function displayEvents() {
+            const filtered = currentFilter === 'all' ? EVENTS : EVENTS.filter(e => e.type === currentFilter);
+            
+            const html = filtered.map(event => {
+                const typeLabels = {
+                    'cuma': '🕌 Cuma Hutbesi',
+                    'sohbet': '💬 Sohbet',
+                    'seminer': '🎓 Seminer',
+                    'etkinlik': '🎉 Etkinlik'
+                };
+                
+                return `
+                    <div class="event-card">
+                        <div class="event-header">
+                            <div class="event-date">📅 ${event.date} • ⏰ ${event.time}</div>
+                            <div class="event-title">${event.title}</div>
+                        </div>
+                        <div class="event-body">
+                            <span class="event-type">${typeLabels[event.type]}</span>
+                            <div class="event-desc">${event.desc}</div>
+                            <div class="event-location">
+                                <span>📍</span>
+                                <span>${event.location}</span>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <div class="attendees">👥 ${event.attendees} katılımcı</div>
+                            <button class="join-btn" onclick="joinEvent('${event.title}')">Katıl</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('eventsContainer').innerHTML = html || '<p style="text-align: center; color: white;">Etkinlik bulunamadı</p>';
+        }
+
+        function filterEvents(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayEvents();
+        }
+
+        function joinEvent(title) {
+            alert(`"${title}" etkinliğine katılım talebiniz alındı! Yakında bilgilendirme mesajı alacaksınız.`);
+        }
+
+        displayEvents();
+    </script>
+</body>
+</html>

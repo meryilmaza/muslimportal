@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu & Namaz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        .weather-card { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 20px; padding: 2.5rem; color: white; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+        .weather-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .weather-icon { font-size: 5rem; }
+        .weather-temp { font-size: 4rem; font-weight: 800; }
+        .weather-desc { font-size: 1.25rem; opacity: 0.9; }
+        .weather-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .weather-detail { text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 12px; }
+        .detail-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .detail-value { font-size: 1.5rem; font-weight: 700; }
+        .detail-label { font-size: 0.875rem; opacity: 0.8; }
+        
+        .prayer-times { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        .prayer-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; margin-bottom: 0.5rem; background: #f8fafc; border-radius: 12px; }
+        .prayer-item.next { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left: 4px solid var(--primary); }
+        .prayer-name { font-weight: 600; display: flex; align-items: center; gap: 0.75rem; }
+        .prayer-time { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+        
+        .tip-card { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 12px; }
+        .tip-text { color: var(--text-secondary); line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            .weather-details { grid-template-columns: 1fr; }
+            .weather-temp { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🌡️ Hava & Namaz</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="weather-card">
+            <div class="weather-main">
+                <div>
+                    <div class="weather-icon" id="weatherIcon">☀️</div>
+                    <div class="weather-desc" id="weatherDesc">Açık ve Güneşli</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="weather-temp" id="temp">18°</div>
+                    <div style="opacity: 0.8;">İstanbul</div>
+                </div>
+            </div>
+            <div class="weather-details">
+                <div class="weather-detail">
+                    <div class="detail-icon">💨</div>
+                    <div class="detail-value">12 km/h</div>
+                    <div class="detail-label">Rüzgar</div>
+                </div>
+                <div class="weather-detail">
+                    <div class="detail-icon">💧</div>
+                    <div class="detail-value">65%</div>
+                    <div class="detail-label">Nem</div>
+                </div>
+                <div class="weather-detail">
+                    <div class="detail-icon">👁️</div>
+                    <div class="detail-value">10 km</div>
+                    <div class="detail-label">Görüş</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prayer-times">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-primary);">🕌 Bugünkü Namaz Vakitleri</h2>
+            <div class="prayer-item">
+                <div class="prayer-name"><span>🌅</span> İmsak</div>
+                <div class="prayer-time">05:42</div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name"><span>☀️</span> Güneş</div>
+                <div class="prayer-time">07:18</div>
+            </div>
+            <div class="prayer-item next">
+                <div class="prayer-name"><span>🌤️</span> Öğle</div>
+                <div class="prayer-time">12:45 ⏰</div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name"><span>🌅</span> İkindi</div>
+                <div class="prayer-time">15:12</div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name"><span>🌆</span> Akşam</div>
+                <div class="prayer-time">17:35</div>
+            </div>
+            <div class="prayer-item">
+                <div class="prayer-name"><span>🌃</span> Yatsı</div>
+                <div class="prayer-time">19:04</div>
+            </div>
+        </div>
+
+        <div class="tip-card">
+            <div class="tip-text">
+                <strong>☔ Hava Durumu Tavsiyesi:</strong> Bugün hava açık olacak. 
+                Öğle namazı için camiye giderken güneş gözlüğünüzü yanınıza alabilirsiniz. 
+                İkindi sonrası sıcaklık düşebilir, ince bir ceket faydalı olabilir.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const weatherConditions = [
+            { icon: '☀️', desc: 'Açık ve Güneşli', temp: 18 },
+            { icon: '⛅', desc: 'Parçalı Bulutlu', temp: 16 },
+            { icon: '☁️', desc: 'Bulutlu', temp: 14 },
+            { icon: '🌧️', desc: 'Yağmurlu', temp: 12 },
+            { icon: '⛈️', desc: 'Sağanak Yağışlı', temp: 10 }
+        ];
+
+        const currentWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+        document.getElementById('weatherIcon').textContent = currentWeather.icon;
+        document.getElementById('weatherDesc').textContent = currentWeather.desc;
+        document.getElementById('temp').textContent = currentWeather.temp + '°';
+    </script>
+</body>
+</html>

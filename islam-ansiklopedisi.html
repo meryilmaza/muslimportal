@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İslam Ansiklopedisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .category-card { background: white; border-radius: 16px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+        .category-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+        .category-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .category-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .category-count { color: var(--text-secondary); font-size: 0.875rem; }
+        
+        .content-area { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); display: none; }
+        .content-area.show { display: block; }
+        .back-to-categories { padding: 0.75rem 1.5rem; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-bottom: 2rem; }
+        
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .item-card { background: #f8fafc; border-radius: 12px; padding: 1.5rem; }
+        .item-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem; }
+        .item-desc { color: var(--text-secondary); line-height: 1.6; font-size: 0.875rem; }
+        .item-meta { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; color: var(--text-secondary); font-size: 0.75rem; }
+        
+        @media (max-width: 768px) {
+            .categories { grid-template-columns: 1fr; }
+            .items-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📚 İslam Ansiklopedisi</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div id="categoriesView">
+            <div class="categories">
+                <div class="category-card" onclick="showCategory('peygamberler')">
+                    <div class="category-icon">👤</div>
+                    <div class="category-title">Peygamberler</div>
+                    <div class="category-count">25 peygamber</div>
+                </div>
+                <div class="category-card" onclick="showCategory('sahabeler')">
+                    <div class="category-icon">👥</div>
+                    <div class="category-title">Sahabeler</div>
+                    <div class="category-count">15+ sahabe</div>
+                </div>
+                <div class="category-card" onclick="showCategory('tarih')">
+                    <div class="category-icon">📖</div>
+                    <div class="category-title">İslam Tarihi</div>
+                    <div class="category-count">10 dönem</div>
+                </div>
+                <div class="category-card" onclick="showCategory('cografya')">
+                    <div class="category-icon">🕌</div>
+                    <div class="category-title">Kutsal Yerler</div>
+                    <div class="category-count">20+ yer</div>
+                </div>
+                <div class="category-card" onclick="showCategory('mezhep')">
+                    <div class="category-icon">⚖️</div>
+                    <div class="category-title">Fıkıh Mezhepleri</div>
+                    <div class="category-count">4 mezhep</div>
+                </div>
+                <div class="category-card" onclick="showCategory('terimler')">
+                    <div class="category-icon">📝</div>
+                    <div class="category-title">İslami Terimler</div>
+                    <div class="category-count">100+ terim</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contentView" class="content-area">
+            <button class="back-to-categories" onclick="showCategories()">← Kategorilere Dön</button>
+            <div id="contentContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const DATA = {
+            peygamberler: [
+                { name: 'Hz. Adem (a.s.)', desc: 'İlk insan ve ilk peygamber. Allah tarafından yaratılan ilk insan, cennetten yeryüzüne indirildi.', meta: 'Yaşadığı Yer: Cennet ve Yeryüzü' },
+                { name: 'Hz. Nuh (a.s.)', desc: 'Tufan peygamberi. Kavmine 950 yıl dâvet etti. Gemi (sefine) yaparak müminleri tufandan kurtardı.', meta: 'Mucize: Tufan ve Gemi' },
+                { name: 'Hz. İbrahim (a.s.)', desc: 'Hanif dinin babası. Putları kırdı, ateşe atıldı ama yanmadı. Kâbe\'yi yeniden inşa etti.', meta: 'Lakap: Halilullah (Allah\'ın dostu)' },
+                { name: 'Hz. İsmail (a.s.)', desc: 'Hz. İbrahim\'in oğlu. Babası ile Kâbe\'yi inşa etti. Kurban edilmek istendi ama kurtuldu.', meta: 'Arapların atası' },
+                { name: 'Hz. Musa (a.s.)', desc: 'Tevrat\'ı getiren peygamber. Firavun\'a karşı mücadele etti. Denizi yararak kavmini kurtardı.', meta: 'Mucize: Asa, Denizin yarılması' },
+                { name: 'Hz. İsa (a.s.)', desc: 'İncil\'i getiren peygamber. Babasız doğdu. Ölüleri diriltme, hastaları iyileştirme mucizesi.', meta: 'Anne: Meryem (a.s.)' },
+                { name: 'Hz. Muhammed (s.a.v.)', desc: 'Son peygamber ve peygamberlerin efendisi. Kuran-ı Kerim\'i getirdi. İslam dinini tebliğ etti.', meta: 'Lakap: Habibullah, Resulullah' }
+            ],
+            sahabeler: [
+                { name: 'Hz. Ebubekir (r.a.)', desc: 'İlk halife, Peygamberimizin en yakın arkadaşı. Sıddık (çok doğru) lakabıyla anılır.', meta: 'Halifelik: 632-634' },
+                { name: 'Hz. Ömer (r.a.)', desc: 'İkinci halife. Adaletiyle meşhur. İslam topraklarını çok genişletti. Faruk lakabıyla anılır.', meta: 'Halifelik: 634-644' },
+                { name: 'Hz. Osman (r.a.)', desc: 'Üçüncü halife. Kuran\'ı çoğalttı ve standartlaştırdı. Çok cömert, Zünnureyn lakabıyla anılır.', meta: 'Halifelik: 644-656' },
+                { name: 'Hz. Ali (r.a.)', desc: 'Dördüncü halife. Peygamberimizin amcasının oğlu ve damadı. Cesaretiyle ve ilmiyle tanınır.', meta: 'Halifelik: 656-661' },
+                { name: 'Hz. Hatice (r.a.)', desc: 'Peygamberimizin ilk eşi. İslam\'a ilk iman eden kadın. Tüm malını İslam\'a harcadı.', meta: 'Lakap: Ümmü\'l-Müminin' },
+                { name: 'Hz. Ayşe (r.a.)', desc: 'Peygamberimizin eşi, Hz. Ebubekir\'in kızı. Çok âlim bir sahabe. Birçok hadis rivayet etti.', meta: '2210 hadis rivayet etti' }
+            ],
+            tarih: [
+                { name: 'Mekke Dönemi (610-622)', desc: '13 yıl sürdü. Müslümanlar zulüm gördü. Gizli davet dönemi. Habeşistan\'a hicret.', meta: 'Süre: 13 yıl' },
+                { name: 'Medine Dönemi (622-632)', desc: '10 yıl sürdü. İslam devleti kuruldu. Medine Sözleşmesi yapıldı. Gazalar oldu.', meta: 'Süre: 10 yıl' },
+                { name: 'Hulefa-i Raşidin (632-661)', desc: 'Dört halife dönemi. İslam toprakları çok genişledi. Kuran toplandı.', meta: '4 Halife: Ebubekir, Ömer, Osman, Ali' },
+                { name: 'Emeviler (661-750)', desc: 'Şam merkezli. İslam İspanya\'ya kadar yayıldı. Emevi Camii yapıldı.', meta: 'Başkent: Şam' },
+                { name: 'Abbasiler (750-1258)', desc: 'Bağdat merkezli. İlim ve kültürün altın çağı. Birçok âlim yetişti.', meta: 'Başkent: Bağdat' }
+            ],
+            cografya: [
+                { name: 'Kâbe (Mekke)', desc: 'Müslümanların kıblesi. Hz. İbrahim ve İsmail tarafından inşa edildi. Hacın en önemli noktası.', meta: 'Şehir: Mekke, Suudi Arabistan' },
+                { name: 'Mescid-i Nebevi (Medine)', desc: 'Peygamberimizin camii ve kabri. İslam\'ın ikinci kutsal mescidi.', meta: 'Şehir: Medine, Suudi Arabistan' },
+                { name: 'Mescid-i Aksa (Kudüs)', desc: 'İslam\'ın üçüncü kutsal mescidi. Miraç\'ın başlangıç noktası.', meta: 'Şehir: Kudüs, Filistin' },
+                { name: 'Arafat Dağı', desc: 'Hac ibadetinin en önemli rüknü. Vakfe burada yapılır. Hz. Adem ve Havva burada buluştu.', meta: 'Konum: Mekke yakınları' }
+            ],
+            mezhep: [
+                { name: 'Hanefi Mezhebi', desc: 'Kurucusu: İmam-ı Azam Ebu Hanife. En yaygın mezhep. Türkiye, Orta Asya, Hint alt kıtası.', meta: 'Kurucu: Ebu Hanife (699-767)' },
+                { name: 'Şafii Mezhebi', desc: 'Kurucusu: İmam-ı Şafii. Hadise önem verir. Endonezya, Malezya, Mısır\'da yaygın.', meta: 'Kurucu: İmam Şafii (767-820)' },
+                { name: 'Maliki Mezhebi', desc: 'Kurucusu: İmam Malik. Medine ehlinin amelini esas alır. Kuzey Afrika\'da yaygın.', meta: 'Kurucu: İmam Malik (711-795)' },
+                { name: 'Hanbeli Mezhebi', desc: 'Kurucusu: İmam Ahmed bin Hanbel. Naslara sıkı bağlı. Suudi Arabistan\'da yaygın.', meta: 'Kurucu: Ahmed bin Hanbel (780-855)' }
+            ],
+            terimler: [
+                { name: 'Salat', desc: 'Namaz demektir. İslam\'ın beş şartından biridir. Günde 5 vakit kılınır.', meta: 'Arapça: صلاة' },
+                { name: 'Zekât', desc: 'Malın 40\'ta 1\'ini fakirlere vermek. İslam\'ın 5 şartından biri.', meta: 'Arapça: زكاة' },
+                { name: 'Hac', desc: 'Mekke\'ye giderek belirli ibadetleri yapmak. Gücü yetene farzdır.', meta: 'Arapça: حج' },
+                { name: 'Şehadet', desc: 'Allah\'ın birliğine ve Hz. Muhammed\'in peygamberliğine şahitlik. İslam\'ın temeli.', meta: 'Arapça: شهادة' },
+                { name: 'İman', desc: 'Kalp ile tasdik, dil ile ikrar. Allah\'a, meleklere, kitaplara, peygamberlere, ahiret gününe, kadere iman.', meta: 'Arapça: إيمان' },
+                { name: 'Tevhid', desc: 'Allah\'ın bir olduğuna inanmak. İslam\'ın esasıdır.', meta: 'Arapça: توحيد' },
+                { name: 'Cennet', desc: 'Ahirette müminlerin ebedi kalacağı saadet yurdu.', meta: 'Arapça: جنة' },
+                { name: 'Cehennem', desc: 'Ahirette inkarcıların ve günahkarların cezalandırılacağı yer.', meta: 'Arapça: جهنم' }
+            ]
+        };
+
+        function showCategories() {
+            document.getElementById('categoriesView').style.display = 'block';
+            document.getElementById('contentView').classList.remove('show');
+        }
+
+        function showCategory(category) {
+            const items = DATA[category];
+            const titles = {
+                peygamberler: '👤 Peygamberler',
+                sahabeler: '👥 Sahabeler',
+                tarih: '📖 İslam Tarihi',
+                cografya: '🕌 Kutsal Yerler',
+                mezhep: '⚖️ Fıkıh Mezhepleri',
+                terimler: '📝 İslami Terimler'
+            };
+
+            const html = `
+                <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--text-primary);">${titles[category]}</h2>
+                <div class="items-grid">
+                    ${items.map(item => `
+                        <div class="item-card">
+                            <div class="item-title">${item.name}</div>
+                            <div class="item-desc">${item.desc}</div>
+                            <div class="item-meta">ℹ️ ${item.meta}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('contentContainer').innerHTML = html;
+            document.getElementById('categoriesView').style.display = 'none';
+            document.getElementById('contentView').classList.add('show');
+        }
+    </script>
+</body>
+</html>

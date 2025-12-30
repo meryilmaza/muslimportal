@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dua & Zikir Koleksiyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        .tabs { background: white; border-radius: 20px; padding: 1rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .tab-btn { padding: 1rem; border: none; background: white; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.875rem; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        
+        .duas-grid { display: grid; gap: 1.5rem; }
+        .dua-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .dua-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+        .dua-arabic { font-family: 'Scheherazade New', serif; font-size: 2rem; text-align: right; direction: rtl; color: var(--text-primary); margin-bottom: 1rem; line-height: 2.5; padding: 1.5rem; background: #f8fafc; border-radius: 12px; }
+        .dua-turkish { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; }
+        .dua-benefit { background: #f0fdf4; padding: 1rem; border-radius: 10px; color: var(--primary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .dua-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .action-btn { padding: 0.5rem 1rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.875rem; }
+        .btn-fav { background: #fef3c7; color: #d97706; }
+        .btn-copy { background: #e0f2fe; color: #0369a1; }
+        .btn-share { background: #dbeafe; color: #1d4ed8; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .tabs { grid-template-columns: 1fr 1fr; }
+            .dua-arabic { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🤲 Dua & Zikir Koleksiyonu</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filterDuas('gunluk')">📅 Günlük</button>
+            <button class="tab-btn" onclick="filterDuas('namaz')">🕌 Namaz</button>
+            <button class="tab-btn" onclick="filterDuas('sabah-aksam')">🌅 Sabah/Akşam</button>
+            <button class="tab-btn" onclick="filterDuas('ozel')">✨ Özel Durum</button>
+            <button class="tab-btn" onclick="filterDuas('zikir')">📿 Zikir</button>
+        </div>
+
+        <div class="duas-grid" id="duasContainer"></div>
+    </div>
+
+    <script>
+        const DUAS = [
+            // Günlük Dualar
+            {
+                category: 'gunluk',
+                title: 'Sabah Uyanma Duası',
+                arabic: 'اَلْحَمْدُ لِلّٰهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',
+                turkish: 'Bizi öldükten sonra dirilten Allah\'a hamd olsun. Dönüş ancak O\'nadır.',
+                benefit: 'Sabah uyanınca okunur'
+            },
+            {
+                category: 'gunluk',
+                title: 'Yemek Öncesi Duası',
+                arabic: 'بِسْمِ اللّٰهِ وَعَلٰى بَرَكَةِ اللّٰهِ',
+                turkish: 'Allah\'ın adıyla ve Allah\'ın bereketi üzerine.',
+                benefit: 'Her yemekten önce okunur'
+            },
+            {
+                category: 'gunluk',
+                title: 'Yemek Sonrası Duası',
+                arabic: 'اَلْحَمْدُ لِلّٰهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',
+                turkish: 'Bize yedirip içiren ve bizi müslüman kılan Allah\'a hamd olsun.',
+                benefit: 'Yemekten sonra şükür için okunur'
+            },
+            {
+                category: 'gunluk',
+                title: 'Ev Çıkma Duası',
+                arabic: 'بِسْمِ اللّٰهِ تَوَكَّلْتُ عَلَى اللّٰهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ',
+                turkish: 'Allah\'ın adıyla, Allah\'a tevekkül ettim. Güç ve kuvvet ancak Allah\'tandır.',
+                benefit: 'Evden çıkarken korunma için okunur'
+            },
+            
+            // Namaz Duaları
+            {
+                category: 'namaz',
+                title: 'İftitah Duası (Sübhaneke)',
+                arabic: 'سُبْحَانَكَ اللّٰهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ وَتَعَالٰى جَدُّكَ وَلَا إِلٰهَ غَيْرُكَ',
+                turkish: 'Seni noksan sıfatlardan tenzih ederim Allah\'ım! Seni hamd ile yâd ederim. Adın mübarektir, şanın yücedir. Senden başka ilah yoktur.',
+                benefit: 'Namazın başında, tekbirden sonra okunur'
+            },
+            {
+                category: 'namaz',
+                title: 'Rükû Tesbihi',
+                arabic: 'سُبْحَانَ رَبِّيَ الْعَظِيمِ',
+                turkish: 'Yüce Rabbimi her türlü eksiklikten tenzih ederim.',
+                benefit: 'Rükûda 3 defa okunur'
+            },
+            {
+                category: 'namaz',
+                title: 'Secde Tesbihi',
+                arabic: 'سُبْحَانَ رَبِّيَ الْأَعْلٰى',
+                turkish: 'En yüce olan Rabbimi her türlü eksiklikten tenzih ederim.',
+                benefit: 'Secdede 3 defa okunur'
+            },
+            
+            // Sabah-Akşam Ezkarı
+            {
+                category: 'sabah-aksam',
+                title: 'Ayetel Kürsi',
+                arabic: 'اَللّٰهُ لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',
+                turkish: 'Allah, O\'ndan başka ilah yoktur. Diridir, Kayyum\'dur. (Bakara 255)',
+                benefit: 'Sabah akşam okunur, korur'
+            },
+            {
+                category: 'sabah-aksam',
+                title: 'İhlas Suresi',
+                arabic: 'قُلْ هُوَ اللّٰهُ أَحَدٌ ۝ اَللّٰهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ',
+                turkish: 'De ki: O, Allah\'tır, bir tektir. Allah Samed\'dir. Doğurmamış ve doğurulmamıştır. Hiçbir şey O\'na denk değildir.',
+                benefit: 'Sabah akşam 3\'er defa okunur'
+            },
+            
+            // Özel Durum Duaları
+            {
+                category: 'ozel',
+                title: 'Hastalık Duası',
+                arabic: 'اَللّٰهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ اِشْفِ أَنْتَ الشَّافِي',
+                turkish: 'Allah\'ım, insanların Rabbi! Hastalığı gider, şifa ver. Şifa veren ancak Sensin.',
+                benefit: 'Hastalık zamanında okunur'
+            },
+            {
+                category: 'ozel',
+                title: 'Sıkıntı Duası',
+                arabic: 'لَا إِلٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
+                turkish: 'Senden başka ilah yoktur, Seni tenzih ederim. Şüphesiz ben zalimlerden oldum.',
+                benefit: 'Zor durumda okunur (Yunus Peygamberin duası)'
+            },
+            {
+                category: 'ozel',
+                title: 'Borç Duası',
+                arabic: 'اَللّٰهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ',
+                turkish: 'Allah\'ım! Helalinle beni haramından kayıt et. Fadlınla beni Senden başkasından müstağni kıl.',
+                benefit: 'Borçtan kurtulmak için okunur'
+            },
+            
+            // Zikirler
+            {
+                category: 'zikir',
+                title: 'Tesbih',
+                arabic: 'سُبْحَانَ اللّٰهِ',
+                turkish: 'Allah\'ı tenzih ederim, noksan sıfatlardan uzaktır.',
+                benefit: '33 defa okunur'
+            },
+            {
+                category: 'zikir',
+                title: 'Tahmid',
+                arabic: 'اَلْحَمْدُ لِلّٰهِ',
+                turkish: 'Hamd Allah\'a mahsustur.',
+                benefit: '33 defa okunur'
+            },
+            {
+                category: 'zikir',
+                title: 'Tekbir',
+                arabic: 'اَللّٰهُ أَكْبَرُ',
+                turkish: 'Allah en büyüktür.',
+                benefit: '34 defa okunur'
+            },
+            {
+                category: 'zikir',
+                title: 'Tehlil',
+                arabic: 'لَا إِلٰهَ إِلَّا اللّٰهُ',
+                turkish: 'Allah\'tan başka ilah yoktur.',
+                benefit: '100 defa okunur, günahlar dökülür'
+            },
+            {
+                category: 'zikir',
+                title: 'Salavat-ı Şerife',
+                arabic: 'اَللّٰهُمَّ صَلِّ عَلٰى سَيِّدِنَا مُحَمَّدٍ وَعَلٰى آلِ سَيِّدِنَا مُحَمَّدٍ',
+                turkish: 'Allah\'ım! Efendimiz Muhammed\'e ve Efendimiz Muhammed\'in ailesine salat eyle.',
+                benefit: 'Peygamber Efendimize saygı ve sevgi göstermek için'
+            }
+        ];
+
+        let currentCategory = 'gunluk';
+
+        function displayDuas() {
+            const filtered = DUAS.filter(d => d.category === currentCategory);
+            
+            const html = filtered.map((dua, index) => `
+                <div class="dua-card">
+                    <div class="dua-title">${dua.title}</div>
+                    <div class="dua-arabic">${dua.arabic}</div>
+                    <div class="dua-turkish">${dua.turkish}</div>
+                    <div class="dua-benefit">💡 ${dua.benefit}</div>
+                    <div class="dua-actions">
+                        <button class="action-btn btn-fav" onclick="toggleFavorite(${index})">⭐ Favori</button>
+                        <button class="action-btn btn-copy" onclick="copyDua('${dua.arabic}')">📋 Kopyala</button>
+                        <button class="action-btn btn-share" onclick="shareDua('${dua.title}')">📤 Paylaş</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('duasContainer').innerHTML = html;
+        }
+
+        function filterDuas(category) {
+            currentCategory = category;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayDuas();
+        }
+
+        function toggleFavorite(index) {
+            alert('⭐ Favorilere eklendi!');
+        }
+
+        function copyDua(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('📋 Dua kopyalandı!');
+            });
+        }
+
+        function shareDua(title) {
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'İslami Portal\'dan bir dua paylaşımı'
+                });
+            } else {
+                alert('📤 Paylaşım özelliği bu tarayıcıda desteklenmiyor');
+            }
+        }
+
+        displayDuas();
+    </script>
+</body>
+</html>

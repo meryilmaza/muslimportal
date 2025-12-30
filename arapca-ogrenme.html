@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arapça Öğrenme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        .levels { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .level-btn { padding: 1rem; border: 2px solid #e2e8f0; background: white; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: center; }
+        .level-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .lesson-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        .lesson-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; }
+        
+        .alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; }
+        .letter-card { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .letter-card:hover { transform: scale(1.05); }
+        .letter-arabic { font-family: 'Scheherazade New', serif; font-size: 3rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .letter-name { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); }
+        
+        .words-grid { display: grid; gap: 1rem; }
+        .word-card { background: #f8fafc; border-radius: 12px; padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
+        .word-arabic { font-family: 'Scheherazade New', serif; font-size: 2rem; color: var(--text-primary); min-width: 100px; }
+        .word-info { flex: 1; }
+        .word-turkish { font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .word-category { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        .quiz-card { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 16px; padding: 2rem; margin-top: 2rem; }
+        .quiz-question { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 1.5rem; }
+        .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .quiz-option { padding: 1rem; background: white; border: 2px solid transparent; border-radius: 10px; text-align: center; cursor: pointer; font-weight: 600; }
+        .quiz-option:hover { border-color: var(--primary); }
+        
+        @media (max-width: 768px) {
+            .levels { grid-template-columns: 1fr 1fr; }
+            .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .quiz-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🗣️ Arapça Öğrenme</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="levels">
+            <button class="level-btn active" onclick="showLevel('alphabet')">🔤 Alfabe</button>
+            <button class="level-btn" onclick="showLevel('words')">📝 Kelimeler</button>
+            <button class="level-btn" onclick="showLevel('grammar')">📖 Gramer</button>
+            <button class="level-btn" onclick="showLevel('practice')">✍️ Pratik</button>
+        </div>
+
+        <!-- ALFABE -->
+        <div id="level-alphabet" class="lesson-card">
+            <div class="lesson-title">🔤 Arapça Alfabe (28 Harf)</div>
+            <div class="alphabet-grid" id="alphabetGrid"></div>
+        </div>
+
+        <!-- KELİMELER -->
+        <div id="level-words" class="lesson-card" style="display: none;">
+            <div class="lesson-title">📝 Temel Kelimeler</div>
+            <div class="words-grid" id="wordsGrid"></div>
+        </div>
+
+        <!-- GRAMER -->
+        <div id="level-grammar" class="lesson-card" style="display: none;">
+            <div class="lesson-title">📖 Temel Gramer</div>
+            <div class="words-grid">
+                <div class="word-card">
+                    <div class="word-arabic">اَلْ</div>
+                    <div class="word-info">
+                        <div class="word-turkish">El (Belirtme Edatı)</div>
+                        <div class="word-category">İsimlerin başına gelir. "The" anlamındadır.</div>
+                    </div>
+                </div>
+                <div class="word-card">
+                    <div class="word-arabic">فِي</div>
+                    <div class="word-info">
+                        <div class="word-turkish">Fi (İçinde, -de/-da)</div>
+                        <div class="word-category">Yer belirtir. Örnek: في المسجد (camide)</div>
+                    </div>
+                </div>
+                <div class="word-card">
+                    <div class="word-arabic">مِنْ</div>
+                    <div class="word-info">
+                        <div class="word-turkish">Min (-den/-dan)</div>
+                        <div class="word-category">Kaynak belirtir. Örnek: من البيت (evden)</div>
+                    </div>
+                </div>
+                <div class="word-card">
+                    <div class="word-arabic">إِلٰى</div>
+                    <div class="word-info">
+                        <div class="word-turkish">İla (-e/-a, doğru)</div>
+                        <div class="word-category">Yön belirtir. Örnek: إلى المدرسة (okula)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRATİK -->
+        <div id="level-practice" class="lesson-card" style="display: none;">
+            <div class="lesson-title">✍️ Pratik Yapın</div>
+            <div class="quiz-card">
+                <div class="quiz-question">❓ "Selam" Arapça'da nasıl yazılır?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">السَّلامُ</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">الْحَمْدُ</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">الصَّلاةُ</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">الْكِتابُ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ALPHABET = [
+            { arabic: 'ا', name: 'Elif' }, { arabic: 'ب', name: 'Be' },
+            { arabic: 'ت', name: 'Te' }, { arabic: 'ث', name: 'Se' },
+            { arabic: 'ج', name: 'Cim' }, { arabic: 'ح', name: 'Ha' },
+            { arabic: 'خ', name: 'Hı' }, { arabic: 'د', name: 'Dal' },
+            { arabic: 'ذ', name: 'Zel' }, { arabic: 'ر', name: 'Re' },
+            { arabic: 'ز', name: 'Ze' }, { arabic: 'س', name: 'Sin' },
+            { arabic: 'ش', name: 'Şın' }, { arabic: 'ص', name: 'Sad' },
+            { arabic: 'ض', name: 'Dad' }, { arabic: 'ط', name: 'Tı' },
+            { arabic: 'ظ', name: 'Zı' }, { arabic: 'ع', name: 'Ayın' },
+            { arabic: 'غ', name: 'Gayın' }, { arabic: 'ف', name: 'Fe' },
+            { arabic: 'ق', name: 'Kaf' }, { arabic: 'ك', name: 'Kef' },
+            { arabic: 'ل', name: 'Lam' }, { arabic: 'م', name: 'Mim' },
+            { arabic: 'ن', name: 'Nun' }, { arabic: 'ه', name: 'He' },
+            { arabic: 'و', name: 'Vav' }, { arabic: 'ي', name: 'Ye' }
+        ];
+
+        const WORDS = [
+            { arabic: 'اَللّٰهُ', turkish: 'Allah', category: 'Din' },
+            { arabic: 'السَّلامُ', turkish: 'Selam', category: 'Selamlaşma' },
+            { arabic: 'الْحَمْدُ لِلّٰهِ', turkish: 'Elhamdülillah', category: 'Şükür' },
+            { arabic: 'بِسْمِ اللّٰهِ', turkish: 'Besmele', category: 'Dua' },
+            { arabic: 'الْمَسْجِدُ', turkish: 'Mescit, Cami', category: 'Yer' },
+            { arabic: 'الْكِتابُ', turkish: 'Kitap', category: 'Eşya' },
+            { arabic: 'الْبَيْتُ', turkish: 'Ev', category: 'Yer' },
+            { arabic: 'الْمَدْرَسَةُ', turkish: 'Okul', category: 'Yer' },
+            { arabic: 'الْأُمُّ', turkish: 'Anne', category: 'Aile' },
+            { arabic: 'الْأَبُ', turkish: 'Baba', category: 'Aile' },
+            { arabic: 'الْوَلَدُ', turkish: 'Çocuk, Oğul', category: 'Aile' },
+            { arabic: 'الْمَاءُ', turkish: 'Su', category: 'İçecek' },
+            { arabic: 'الْخُبْزُ', turkish: 'Ekmek', category: 'Yemek' },
+            { arabic: 'الْيَوْمُ', turkish: 'Gün', category: 'Zaman' },
+            { arabic: 'الصَّلاةُ', turkish: 'Namaz', category: 'İbadet' }
+        ];
+
+        function displayAlphabet() {
+            document.getElementById('alphabetGrid').innerHTML = ALPHABET.map(letter => `
+                <div class="letter-card">
+                    <div class="letter-arabic">${letter.arabic}</div>
+                    <div class="letter-name">${letter.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function displayWords() {
+            document.getElementById('wordsGrid').innerHTML = WORDS.map(word => `
+                <div class="word-card">
+                    <div class="word-arabic">${word.arabic}</div>
+                    <div class="word-info">
+                        <div class="word-turkish">${word.turkish}</div>
+                        <div class="word-category">📁 ${word.category}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showLevel(level) {
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('level-alphabet').style.display = 'none';
+            document.getElementById('level-words').style.display = 'none';
+            document.getElementById('level-grammar').style.display = 'none';
+            document.getElementById('level-practice').style.display = 'none';
+            
+            document.getElementById('level-' + level).style.display = 'block';
+        }
+
+        function checkAnswer(element, isCorrect) {
+            if (isCorrect) {
+                element.style.background = 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)';
+                element.textContent += ' ✅';
+                setTimeout(() => alert('🎉 Doğru! Tebrikler!'), 100);
+            } else {
+                element.style.background = 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)';
+                element.textContent += ' ❌';
+            }
+        }
+
+        displayAlphabet();
+        displayWords();
+    </script>
+</body>
+</html>

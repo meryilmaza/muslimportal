@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İftar Menüleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        .day-selector { background: white; border-radius: 20px; padding: 1rem; margin-bottom: 2rem; display: flex; gap: 0.5rem; overflow-x: auto; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .day-btn { padding: 1rem; min-width: 80px; border: 2px solid #e2e8f0; background: white; border-radius: 10px; font-weight: 600; cursor: pointer; text-align: center; }
+        .day-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .menu-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .menu-title { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; text-align: center; }
+        .menu-subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; }
+        
+        .courses { display: grid; gap: 2rem; }
+        .course-section { }
+        .course-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+        .dishes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .dish-card { background: #f8fafc; border-radius: 12px; padding: 1.5rem; }
+        .dish-name { font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .dish-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; }
+        .nutrition { display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        .nutrition-item { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        @media (max-width: 768px) {
+            .dishes-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>🍽️ İftar Menüleri</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="day-selector">
+            <button class="day-btn active" onclick="showMenu(1)">1. Gün</button>
+            <button class="day-btn" onclick="showMenu(2)">2. Gün</button>
+            <button class="day-btn" onclick="showMenu(3)">3. Gün</button>
+            <button class="day-btn" onclick="showMenu(4)">4. Gün</button>
+            <button class="day-btn" onclick="showMenu(5)">5. Gün</button>
+            <button class="day-btn" onclick="showMenu(6)">6. Gün</button>
+            <button class="day-btn" onclick="showMenu(7)">7. Gün</button>
+        </div>
+
+        <div class="menu-card" id="menuCard">
+            <!-- Menu will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const MENUS = {
+            1: {
+                title: '1. Gün İftar Menüsü',
+                subtitle: 'Geleneksel ve besleyici',
+                courses: [
+                    {
+                        name: 'Açılış',
+                        icon: '🥤',
+                        dishes: [
+                            { name: 'Hurma', desc: '3-5 adet', cal: 70 },
+                            { name: 'Su', desc: '1 bardak', cal: 0 },
+                            { name: 'Çorba (Mercimek)', desc: 'Protein ve demir açısından zengin', cal: 180 }
+                        ]
+                    },
+                    {
+                        name: 'Ana Yemek',
+                        icon: '🍲',
+                        dishes: [
+                            { name: 'Tavuk Pilav', desc: 'Yağsız tavuk göğsü ve bulgur pilavı', cal: 450 },
+                            { name: 'Haydari', desc: 'Yoğurt, sarımsak, maydanoz', cal: 80 }
+                        ]
+                    },
+                    {
+                        name: 'Salata & Yan',
+                        icon: '🥗',
+                        dishes: [
+                            { name: 'Mevsim Salata', desc: 'Bol yeşillik, domates, salatalık', cal: 50 },
+                            { name: 'Cacık', desc: 'Hafif ve ferahlatıcı', cal: 70 }
+                        ]
+                    },
+                    {
+                        name: 'Tatlı',
+                        icon: '🍰',
+                        dishes: [
+                            { name: 'Sütlaç', desc: 'Fırında sütlaç', cal: 220 }
+                        ]
+                    }
+                ]
+            },
+            2: {
+                title: '2. Gün İftar Menüsü',
+                subtitle: 'Hafif ve sindirimi kolay',
+                courses: [
+                    {
+                        name: 'Açılış',
+                        icon: '🥤',
+                        dishes: [
+                            { name: 'Hurma', desc: '3-5 adet', cal: 70 },
+                            { name: 'Ayran', desc: '1 bardak', cal: 50 },
+                            { name: 'Domates Çorbası', desc: 'C vitamini deposu', cal: 120 }
+                        ]
+                    },
+                    {
+                        name: 'Ana Yemek',
+                        icon: '🍲',
+                        dishes: [
+                            { name: 'Balık (Fırın)', desc: 'Levrek veya çupra, zeytinyağlı', cal: 350 },
+                            { name: 'Patates Püresi', desc: 'Az yağlı, tereyağsız', cal: 200 }
+                        ]
+                    },
+                    {
+                        name: 'Salata',
+                        icon: '🥗',
+                        dishes: [
+                            { name: 'Çoban Salata', desc: 'Domates, salatalık, biber, soğan', cal: 60 }
+                        ]
+                    },
+                    {
+                        name: 'Tatlı',
+                        icon: '🍰',
+                        dishes: [
+                            { name: 'Komposto', desc: 'Şekersiz meyve kompostosu', cal: 100 }
+                        ]
+                    }
+                ]
+            },
+            3: {
+                title: '3. Gün İftar Menüsü',
+                subtitle: 'Enerji veren ve doyurucu',
+                courses: [
+                    {
+                        name: 'Açılış',
+                        icon: '🥤',
+                        dishes: [
+                            { name: 'Hurma', desc: '3-5 adet', cal: 70 },
+                            { name: 'Şalgam Suyu', desc: '1 bardak', cal: 20 },
+                            { name: 'Ezogelin Çorbası', desc: 'Protein ve lif zengini', cal: 190 }
+                        ]
+                    },
+                    {
+                        name: 'Ana Yemek',
+                        icon: '🍲',
+                        dishes: [
+                            { name: 'Kuru Fasulye', desc: 'Az yağlı, bol domatesli', cal: 280 },
+                            { name: 'Pilav', desc: 'Şehriyeli pirinç pilavı', cal: 250 }
+                        ]
+                    },
+                    {
+                        name: 'Yan Ürünler',
+                        icon: '🥗',
+                        dishes: [
+                            { name: 'Turşu', desc: 'Karışık turşu', cal: 15 },
+                            { name: 'Yeşil Salata', desc: 'Marul, maydanoz, limon', cal: 40 }
+                        ]
+                    },
+                    {
+                        name: 'Tatlı',
+                        icon: '🍰',
+                        dishes: [
+                            { name: 'Meyve', desc: 'Taze mevsim meyveleri', cal: 80 }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        function showMenu(day) {
+            document.querySelectorAll('.day-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i + 1 === day);
+            });
+
+            const menu = MENUS[day] || MENUS[1];
+            const html = `
+                <div class="menu-title">${menu.title}</div>
+                <div class="menu-subtitle">${menu.subtitle}</div>
+                <div class="courses">
+                    ${menu.courses.map(course => `
+                        <div class="course-section">
+                            <div class="course-title">
+                                <span>${course.icon}</span>
+                                <span>${course.name}</span>
+                            </div>
+                            <div class="dishes-grid">
+                                ${course.dishes.map(dish => `
+                                    <div class="dish-card">
+                                        <div class="dish-name">${dish.name}</div>
+                                        <div class="dish-desc">${dish.desc}</div>
+                                        <div class="nutrition">
+                                            <span class="nutrition-item">🔥 ${dish.cal} kcal</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 2rem; padding: 1.5rem; background: #f0fdf4; border-radius: 12px; text-align: center;">
+                    <strong style="color: var(--primary);">💡 İpucu:</strong> 
+                    <span style="color: var(--text-secondary);">İftarı yavaş yavaş açın, acele etmeyin. Çorbadan sonra 10 dakika ara verin.</span>
+                </div>
+            `;
+
+            document.getElementById('menuCard').innerHTML = html;
+        }
+
+        showMenu(1);
+    </script>
+</body>
+</html>

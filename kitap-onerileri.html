@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İslami Kitap Önerileri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --text-primary: #1e293b; --text-secondary: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .back-btn { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.2); border: none; border-radius: 10px; color: white; font-weight: 600; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        .categories { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+        .cat-btn { padding: 0.75rem 1.5rem; border: 2px solid white; background: rgba(255, 255, 255, 0.2); color: white; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .cat-btn.active { background: white; color: var(--primary); }
+        
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .book-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s; }
+        .book-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+        .book-cover { width: 100%; height: 200px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 1rem; }
+        .book-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .book-author { color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .book-desc { color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem; }
+        .book-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .book-tag { padding: 0.25rem 0.75rem; background: #f0fdf4; color: var(--primary); border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .book-rating { color: #f59e0b; font-weight: 700; }
+        
+        @media (max-width: 768px) {
+            .books-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← Ana Sayfa</a>
+        <h1>📖 Kitap Önerileri</h1>
+        <div style="width: 120px;"></div>
+    </div>
+
+    <div class="container">
+        <div class="categories">
+            <button class="cat-btn active" onclick="filterBooks('all')">Tümü</button>
+            <button class="cat-btn" onclick="filterBooks('tefsir')">Tefsir</button>
+            <button class="cat-btn" onclick="filterBooks('siyer')">Siyer</button>
+            <button class="cat-btn" onclick="filterBooks('fıkıh')">Fıkıh</button>
+            <button class="cat-btn" onclick="filterBooks('tasavvuf')">Tasavvuf</button>
+            <button class="cat-btn" onclick="filterBooks('genel')">Genel</button>
+        </div>
+
+        <div class="books-grid" id="booksContainer"></div>
+    </div>
+
+    <script>
+        const BOOKS = [
+            {
+                category: 'tefsir',
+                icon: '📕',
+                title: 'Hak Dini Kuran Dili',
+                author: 'Elmalılı Hamdi Yazır',
+                desc: 'Türkçe\'nin en kapsamlı tefsirlerinden biri. Her ayetin detaylı açıklaması.',
+                rating: 5,
+                tags: ['Tefsir', 'Klasik', 'Kapsamlı']
+            },
+            {
+                category: 'tefsir',
+                icon: '📗',
+                title: 'Kuran Yolu Tefsiri',
+                author: 'Diyanet İşleri Başkanlığı',
+                desc: 'Modern dille yazılmış, anlaşılır bir tefsir. Günümüz Türkçesiyle.',
+                rating: 5,
+                tags: ['Tefsir', 'Modern', 'Anlaşılır']
+            },
+            {
+                category: 'siyer',
+                icon: '📘',
+                title: 'Hz. Muhammed\'in Hayatı',
+                author: 'M. Asım Köksal',
+                desc: 'Peygamber Efendimizin hayatının en detaylı anlatımlarından biri.',
+                rating: 5,
+                tags: ['Siyer', 'Biyografi', 'Detaylı']
+            },
+            {
+                category: 'siyer',
+                icon: '📙',
+                title: 'İslam Tarihi',
+                author: 'Muhammed Hamidullah',
+                desc: 'İslam tarihinin başlangıcından günümüze kapsamlı bir çalışma.',
+                rating: 5,
+                tags: ['Tarih', 'Akademik', 'Kapsamlı']
+            },
+            {
+                category: 'fıkıh',
+                icon: '📓',
+                title: 'Geniş Fıkıh Ansiklopedisi',
+                author: 'Diyanet Vakfı',
+                desc: 'Hanefi fıkhının temel konularını içeren ansiklopedik eser.',
+                rating: 5,
+                tags: ['Fıkıh', 'Hanefi', 'Ansiklopedi']
+            },
+            {
+                category: 'fıkıh',
+                icon: '📔',
+                title: 'İlmihal',
+                author: 'Ömer Nasuhi Bilmen',
+                desc: 'Klasik ilmihal kitabı. İbadetler ve muamelat konularında rehber.',
+                rating: 5,
+                tags: ['İlmihal', 'Klasik', 'Pratik']
+            },
+            {
+                category: 'tasavvuf',
+                icon: '💚',
+                title: 'Kimya-yı Saadet',
+                author: 'İmam Gazali',
+                desc: 'Kalp temizliği ve manevi olgunlaşma üzerine tasavvufi eser.',
+                rating: 5,
+                tags: ['Tasavvuf', 'Ahlak', 'Klasik']
+            },
+            {
+                category: 'tasavvuf',
+                icon: '💙',
+                title: 'Mesnevi',
+                author: 'Mevlana Celaleddin Rumi',
+                desc: 'Manevi hikmetler ve tasavvufi öğretiler içeren şiir eseri.',
+                rating: 5,
+                tags: ['Tasavvuf', 'Şiir', 'Hikmet']
+            },
+            {
+                category: 'genel',
+                icon: '📚',
+                title: 'İslam\'da İnanç Esasları',
+                author: 'Bekir Topaloğlu',
+                desc: 'İman esaslarını sistematik şekilde anlatan temel eser.',
+                rating: 5,
+                tags: ['İman', 'Kelam', 'Temel']
+            },
+            {
+                category: 'genel',
+                icon: '📖',
+                title: 'Risale-i Nur Külliyatı',
+                author: 'Bediüzzaman Said Nursi',
+                desc: 'İman, Kuran ve manevi konularda modern yaklaşımlı eser.',
+                rating: 5,
+                tags: ['İman', 'Modern', 'Kapsamlı']
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        function displayBooks() {
+            const filtered = currentCategory === 'all' ? BOOKS : BOOKS.filter(b => b.category === currentCategory);
+            
+            const html = filtered.map(book => `
+                <div class="book-card">
+                    <div class="book-cover">${book.icon}</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">✍️ ${book.author}</div>
+                    <div class="book-desc">${book.desc}</div>
+                    <div class="book-tags">
+                        ${book.tags.map(tag => `<span class="book-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="book-rating">${'⭐'.repeat(book.rating)}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('booksContainer').innerHTML = html;
+        }
+
+        function filterBooks(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayBooks();
+        }
+
+        displayBooks();
+    </script>
+</body>
+</html>
